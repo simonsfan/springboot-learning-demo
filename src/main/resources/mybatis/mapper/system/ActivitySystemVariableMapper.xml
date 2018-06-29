@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.simons.cn.springbootdemo.dao.system.ActivitySystemVariableMapper" >
+  <resultMap id="BaseResultMap" type="com.simons.cn.springbootdemo.bean.ActivitySystemVariable" >
+    <id column="Id" property="id" jdbcType="INTEGER" />
+    <result column="name" property="name" jdbcType="VARCHAR" />
+    <result column="svkey" property="svKey" jdbcType="VARCHAR" />
+    <result column="value" property="value" jdbcType="VARCHAR" />
+    <result column="memo" property="memo" jdbcType="VARCHAR" />
+    <result column="typecode" property="typeCode" jdbcType="VARCHAR" />
+    <result column="catalog" property="cataLog" jdbcType="TINYINT" />
+    <result column="createtime" property="createTime" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    Id, name, svkey, value, memo, typecode, catalog, createtime
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from activity_system_variable
+    where Id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from activity_system_variable
+    where Id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.simons.cn.springbootdemo.bean.ActivitySystemVariable" >
+    insert into activity_system_variable (Id, name, svkey, 
+      VALUE, memo, typecode, 
+      catalog, createtime)
+    values (#{id,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR}, #{svkey,jdbcType=VARCHAR}, 
+      #{value,jdbcType=VARCHAR}, #{memo,jdbcType=VARCHAR}, #{typecode,jdbcType=VARCHAR}, 
+      #{catalog,jdbcType=TINYINT}, #{createtime,jdbcType=TIMESTAMP})
+  </insert>
+  <update id="updateByPrimaryKey" parameterType="com.simons.cn.springbootdemo.bean.ActivitySystemVariable" >
+    update activity_system_variable
+    set name = #{name,jdbcType=VARCHAR},
+      svkey = #{svkey,jdbcType=VARCHAR},
+      VALUE = #{value,jdbcType=VARCHAR},
+      memo = #{memo,jdbcType=VARCHAR},
+      typecode = #{typecode,jdbcType=VARCHAR},
+      catalog = #{catalog,jdbcType=TINYINT},
+      createtime = #{createtime,jdbcType=TIMESTAMP}
+    where Id = #{id,jdbcType=INTEGER}
+  </update>
+  <select id="getSystemVariableBySvKey" resultMap="BaseResultMap" parameterType="string" >
+    select 
+    <include refid="Base_Column_List" />
+    from activity_system_variable
+    where svkey = #{svkey,jdbcType=VARCHAR}
+  </select>
+</mapper>
