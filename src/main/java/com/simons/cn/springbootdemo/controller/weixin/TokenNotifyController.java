@@ -37,7 +37,7 @@ public class TokenNotifyController {
         if (signature.equals(shahex)) {
             return echostr;
         }
-        return "";
+        return "hello";
     }
 
 }
