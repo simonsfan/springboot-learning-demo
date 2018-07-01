@@ -50,6 +50,7 @@ public class TokenNotifyController {
         List<RequestTextMessage> msgList = ReadxmlByDom.getBooks(wxMsgXml);
         RequestTextMessage rtm = msgList.get(0);
         String replymsg = "<xml><ToUserName>" + rtm.getToUserName() + "</ToUserName><FromUserName>" + rtm.getFromUserName() + "</FromUserName><CreateTime>" + rtm.getCreateTime() + "</CreateTime><MsgType>" + rtm.getMsgType() + "</MsgType><Content>你好] </Content></xml>";
+        logger.info("返回的数据xml格式="+replymsg);
         return replymsg;
     }
 
