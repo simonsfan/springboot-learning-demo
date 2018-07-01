@@ -7,11 +7,11 @@ package com.simons.cn.springbootdemo.aspect;
  * 创建人：simonsfan
  * 创建时间：2018/6/27 19:41
  */
-/*@Aspect
-@Component
+//@Aspect
+//@Component
 public class HttpRequestAspect {
 
-    private static final Logger log = LoggerFactory.getLogger(HttpRequestAspect.class);
+    /*private static final Logger log = LoggerFactory.getLogger(HttpRequestAspect.class);
 
     public static long startTime;
     public static long endTime;
@@ -46,6 +46,6 @@ public class HttpRequestAspect {
     public void getAfterReturn(Object object) {
         log.info("本次接口耗时={}ms", endTime);
         log.info("afterReturning={}", object.toString());
-    }
+    }*/
 
-}*/
+}
