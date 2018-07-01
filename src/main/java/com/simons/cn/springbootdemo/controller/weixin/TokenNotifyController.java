@@ -7,9 +7,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.io.InputStream;
 import java.util.HashMap;
 import java.util.List;
@@ -44,14 +44,16 @@ public class TokenNotifyController {
     }*/
 
     @RequestMapping("/tokencheck")
-    @ResponseBody
-    public String tokenCheck(HttpServletRequest request) throws Exception {
+//    @ResponseBody
+    public void tokenCheck(HttpServletRequest request, HttpServletResponse response) throws Exception {
+        request.setCharacterEncoding("UTF-8");
+        response.setCharacterEncoding("UTF-8");
         Map<String, String> xmlMap = parseXml(request);
         logger.info("解析后的map=" + xmlMap);
 
-        String replymsg = "<xml> <ToUserName>< ![CDATA["+  xmlMap.get("ToUserName") +"] ]></ToUserName> <FromUserName>< ![CDATA["+ xmlMap.get("FromUserName") +"] ]></FromUserName> <CreateTime>" + xmlMap.get("CreateTime") +"</CreateTime> <MsgType>< ![CDATA["+ xmlMap.get("MsgType") +"] ]></MsgType> <Content>< ![CDATA[你好] ]></Content> </xml>";
+        String replymsg = "<xml> <ToUserName>< ![CDATA[" + xmlMap.get("ToUserName") + "] ]></ToUserName> <FromUserName>< ![CDATA[" + xmlMap.get("FromUserName") + "] ]></FromUserName> <CreateTime>" + xmlMap.get("CreateTime") + "</CreateTime> <MsgType>< ![CDATA[" + xmlMap.get("MsgType") + "] ]></MsgType> <Content>< ![CDATA[你好] ]></Content> </xml>";
         logger.info("返回的数据xml格式=" + replymsg);
-        return replymsg;
+        response.getWriter().println(replymsg);
     }
 
     /**
@@ -76,7 +78,6 @@ public class TokenNotifyController {
 
         // 遍历所有子节点
         for (Element e : elementList) {
-            System.out.println(e.getName() + "|" + e.getText());
             map.put(e.getName(), e.getText());
         }
         // 释放资源
