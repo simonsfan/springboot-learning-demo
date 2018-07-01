@@ -1,8 +1,8 @@
 package com.simons.cn.springbootdemo.controller.weixin;
 
-import com.simons.cn.springbootdemo.bean.RequestTextMessage;
-import com.simons.cn.springbootdemo.util.ReadxmlByDom;
-import org.apache.commons.io.IOUtils;
+import org.dom4j.Document;
+import org.dom4j.Element;
+import org.dom4j.io.SAXReader;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
@@ -11,7 +11,10 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.InputStream;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by fanrx on 2018/6/29.
@@ -45,14 +48,46 @@ public class TokenNotifyController {
     @ResponseBody
     public String tokenCheck(HttpServletRequest request, HttpServletResponse response) throws Exception {
         response.setContentType("text/html;charset=UTF-8");
-        String wxMsgXml = IOUtils.toString(request.getInputStream(), "utf-8");
-        logger.info("获取的数据信息>>>>>" + wxMsgXml);
-        List<RequestTextMessage> msgList = ReadxmlByDom.getBooks(wxMsgXml);
-        RequestTextMessage rtm = msgList.get(0);
-        String replymsg = "<xml><ToUserName>" + rtm.getToUserName() + "</ToUserName><FromUserName>" + rtm.getFromUserName() + "</FromUserName><CreateTime>" + rtm.getCreateTime() + "</CreateTime><MsgType>" + rtm.getMsgType() + "</MsgType><Content>你好] </Content></xml>";
-        logger.info("返回的数据xml格式="+replymsg);
+/*        String wxMsgXml = IOUtils.toString(request.getInputStream(), "utf-8");
+        logger.info("获取的数据信息>>>>>" + wxMsgXml);*/
+
+        Map<String, String> xmlMap = parseXml(request);
+        logger.info("解析后的map=" + xmlMap);
+
+        String replymsg = "<xml><ToUserName>" + xmlMap.get("ToUserName") + "</ToUserName><FromUserName>" + xmlMap.get("FromUserName") + "</FromUserName><CreateTime>" + xmlMap.get("CreateTime") + "</CreateTime><MsgType>" + xmlMap.get("MsgType") + "</MsgType><Content>你好] </Content></xml>";
+        logger.info("返回的数据xml格式=" + replymsg);
         return replymsg;
     }
 
+    /**
+     * 解析微信发来的请求（XML）
+     *
+     * @param request 封装了请求信息的HttpServletRequest对象
+     * @return map 解析结果
+     * @throws Exception
+     */
+    public static Map<String, String> parseXml(HttpServletRequest request) throws Exception {
+        // 将解析结果存储在HashMap中
+        Map<String, String> map = new HashMap<String, String>();
+        // 从request中取得输入流
+        InputStream inputStream = request.getInputStream();
+        // 读取输入流
+        SAXReader reader = new SAXReader();
+        Document document = reader.read(inputStream);
+        // 得到xml根元素
+        Element root = document.getRootElement();
+        // 得到根元素的所有子节点
+        List<Element> elementList = root.elements();
+
+        // 遍历所有子节点
+        for (Element e : elementList) {
+            System.out.println(e.getName() + "|" + e.getText());
+            map.put(e.getName(), e.getText());
+        }
+        // 释放资源
+        inputStream.close();
+        inputStream = null;
+        return map;
+    }
 
 }
