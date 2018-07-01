@@ -49,7 +49,7 @@ public class TokenNotifyController {
         logger.info("获取的数据信息>>>>>" + wxMsgXml);
         List<RequestTextMessage> msgList = ReadxmlByDom.getBooks(wxMsgXml);
         RequestTextMessage rtm = msgList.get(0);
-        String replymsg = "<xml> <ToUserName>< ![CDATA[" + rtm.getToUserName() + "] ]></ToUserName> <FromUserName>< ![CDATA[" + rtm.getFromUserName() + "] ]></FromUserName> <CreateTime>" + rtm.getCreateTime() + "</CreateTime> <MsgType>< ![CDATA[" + rtm.getMsgType() + "] ]></MsgType> <Content>< ![CDATA[你好] ]></Content> </xml>";
+        String replymsg = "<xml><ToUserName>" + rtm.getToUserName() + "</ToUserName><FromUserName>" + rtm.getFromUserName() + "</FromUserName><CreateTime>" + rtm.getCreateTime() + "</CreateTime><MsgType>" + rtm.getMsgType() + "</MsgType><Content>你好] </Content></xml>";
         return replymsg;
     }
 
