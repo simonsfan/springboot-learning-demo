@@ -48,30 +48,13 @@ public class TokenNotifyController {
     @ResponseBody
     public String tokenCheck(HttpServletRequest request, HttpServletResponse response) throws Exception {
         response.setContentType("text/html;charset=UTF-8");
-/*        String wxMsgXml = IOUtils.toString(request.getInputStream(), "utf-8");
-        logger.info("获取的数据信息>>>>>" + wxMsgXml);*/
 
         Map<String, String> xmlMap = parseXml(request);
         logger.info("解析后的map=" + xmlMap);
 
-     /*   String replymsg = "<xml><ToUserName>" + xmlMap.get("ToUserName") + "</ToUserName><FromUserName>" + xmlMap.get("FromUserName") + "</FromUserName><CreateTime>" + xmlMap.get("CreateTime") + "</CreateTime><MsgType>" + xmlMap.get("MsgType") + "</MsgType><Content>你好</Content></xml>";
+        String replymsg = "<xml> <ToUserName>< ![CDATA["+  xmlMap.get("ToUserName") +"] ]></ToUserName> <FromUserName>< ![CDATA["+ xmlMap.get("FromUserName") +"] ]></FromUserName> <CreateTime>" + xmlMap.get("CreateTime") +"</CreateTime> <MsgType>< ![CDATA["+ xmlMap.get("MsgType") +"] ]></MsgType> <Content>< ![CDATA[你好] ]></Content> </xml>";
         logger.info("返回的数据xml格式=" + replymsg);
-        return replymsg;*/
-        String fromUserName = xmlMap.get("FromUserName");
-        String toUserName = xmlMap.get("ToUserName");
-        String createTime = xmlMap.get("CreateTime");
-        String content = "自定义信息回复";
-
-        return String.format(
-                "<xml>" +
-                        "<ToUserName><![CDATA[%s]]></ToUserName>" +
-                        "<FromUserName><![CDATA[%s]]></FromUserName>" +
-                        "<CreateTime>%s</CreateTime>" +
-                        "<MsgType><![CDATA[text]]></MsgType>" +
-                        "<Content><![CDATA[%s]]></Content>" +
-                        "</xml>",
-                fromUserName, toUserName, createTime, content);
-
+        return replymsg;
     }
 
     /**
