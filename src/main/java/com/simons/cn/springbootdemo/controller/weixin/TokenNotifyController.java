@@ -51,7 +51,7 @@ public class TokenNotifyController {
         Map<String, String> xmlMap = parseXml(request);
         logger.info("解析后的map=" + xmlMap);
 
-        String replymsg = "<xml><ToUserName>< ![CDATA[" + xmlMap.get("FromUserName") + "] ]></ToUserName><FromUserName>< ![CDATA[" + xmlMap.get("ToUserName") + "] ]></FromUserName><CreateTime>" + xmlMap.get("CreateTime") + "</CreateTime><MsgType>< ![CDATA[" + xmlMap.get("MsgType") + "] ]></MsgType><Content>< ![CDATA[你好] ]></Content></xml>";
+        String replymsg = "<?xml version=\"1.0\" encoding=\"utf-8\"?><xml><ToUserName>< ![CDATA[" + xmlMap.get("FromUserName") + "] ]></ToUserName><FromUserName>< ![CDATA[" + xmlMap.get("ToUserName") + "] ]></FromUserName><CreateTime>" + xmlMap.get("CreateTime") + "</CreateTime><MsgType>< ![CDATA[" + xmlMap.get("MsgType") + "] ]></MsgType><Content>< ![CDATA[你好] ]></Content></xml>";
         logger.info("返回的数据xml格式=" + replymsg);
         response.getWriter().println(replymsg);
     }
