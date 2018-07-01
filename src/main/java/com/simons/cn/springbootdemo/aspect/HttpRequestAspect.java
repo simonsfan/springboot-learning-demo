@@ -1,16 +1,5 @@
 package com.simons.cn.springbootdemo.aspect;
 
-import org.aspectj.lang.JoinPoint;
-import org.aspectj.lang.annotation.*;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.stereotype.Component;
-import org.springframework.web.context.request.RequestContextHolder;
-import org.springframework.web.context.request.ServletRequestAttributes;
-
-import javax.servlet.http.HttpServletRequest;
-
-
 /**
  * 项目名称：springbootdemo
  * 类名称：com.simons.cn.springbootdemo
@@ -18,7 +7,7 @@ import javax.servlet.http.HttpServletRequest;
  * 创建人：simonsfan
  * 创建时间：2018/6/27 19:41
  */
-@Aspect
+/*@Aspect
 @Component
 public class HttpRequestAspect {
 
@@ -59,4 +48,4 @@ public class HttpRequestAspect {
         log.info("afterReturning={}", object.toString());
     }
 
-}
+}*/
