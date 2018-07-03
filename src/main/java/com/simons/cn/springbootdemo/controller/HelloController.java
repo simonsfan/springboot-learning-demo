@@ -1,7 +1,7 @@
 package com.simons.cn.springbootdemo.controller;
 
 import com.simons.cn.springbootdemo.exception.GlobalException;
-import com.simons.cn.springbootdemo.util.ConstantEnum;
+import com.simons.cn.springbootdemo.Enum.ConstantEnum;
 import com.simons.cn.springbootdemo.util.Result;
 import com.simons.cn.springbootdemo.util.ResultUtil;
 import org.slf4j.Logger;

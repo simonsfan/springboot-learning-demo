@@ -1,4 +1,4 @@
-package com.simons.cn.springbootdemo.util;
+package com.simons.cn.springbootdemo.Enum;
 
 /**
  * 项目名称：springbootdemo
@@ -12,7 +12,8 @@ public enum ConstantEnum {
     ERROR(-1, "system error!"),
     SUCCESS(100, "success"),
     LESS10(101, "自定义异常信息-我小于10岁"),
-    MORE50(5001, "自定义异常信息-我大于50岁");
+    MORE50(5001, "自定义异常信息-我大于50岁"),
+    ;
 
     private Integer code;
     private String msg;
