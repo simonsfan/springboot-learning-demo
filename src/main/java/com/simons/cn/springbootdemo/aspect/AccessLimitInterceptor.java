@@ -23,7 +23,7 @@ public class AccessLimitInterceptor extends HandlerInterceptorAdapter {
     /*  实现preHandle方法，返回true表示进入下一个过滤器（如果有下一个）*/
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
-        log.info("过滤器被调用");
+//        log.info("过滤器被调用");
         //省略具体的逻辑
         return true;
     }

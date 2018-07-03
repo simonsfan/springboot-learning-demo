@@ -40,8 +40,12 @@ public class WeixinServiceImpl extends BaseController implements WeixinService {
                 replymsg = appendMsg(xmlMap, "西部链接: https://pan.baidu.com/s/1c347kIG 密码: 25m6");
             } else if (WeiXinEnum.MESSAGE_EVENT.getContentType().equals(msgType)) {  //取消/关注事件类型
                 String event = xmlMap.get("Event");  //事件类型，subscribe(订阅)、unsubscribe(取消订阅)
-                replymsg = appendMsg(xmlMap, "小福利：打开支付宝首页搜索“516277305”，即可领红包");
+                xmlMap.put("MsgType", WeiXinEnum.MESSAGE_TEXT.getContentType());
+                if (event.equals("subscribe")) {
+                    replymsg = appendMsg(xmlMap, "小福利：打开支付宝首页搜索“516277305”，即可领红包");
+                }
             } else {
+                xmlMap.put("MsgType", WeiXinEnum.MESSAGE_TEXT.getContentType());
                 replymsg = appendMsg(xmlMap, "暂不支持回复此类型消息哦~");
             }
             logger.info("返回的数据xml格式=" + replymsg);
