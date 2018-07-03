@@ -13,6 +13,9 @@ public enum ConstantEnum {
     SUCCESS(100, "success"),
     LESS10(101, "自定义异常信息-我小于10岁"),
     MORE50(5001, "自定义异常信息-我大于50岁"),
+
+    ZIMU(10001, "字幕"),
+    SECRETERROR(10002, "密码错误")
     ;
 
     private Integer code;
