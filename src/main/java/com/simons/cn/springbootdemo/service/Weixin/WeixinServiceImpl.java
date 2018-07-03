@@ -36,16 +36,15 @@ public class WeixinServiceImpl extends BaseController implements WeixinService {
             fromUserName = xmlMap.get("FromUserName");
             toUserName = xmlMap.get("ToUserName");
             String replymsg = "";
+            xmlMap.put("MsgType", WeiXinEnum.MESSAGE_TEXT.getContentType());
             if (WeiXinEnum.MESSAGE_TEXT.getContentType().equals(msgType)) {  //文本类型
                 replymsg = appendMsg(xmlMap, "西部链接: https://pan.baidu.com/s/1c347kIG 密码: 25m6");
             } else if (WeiXinEnum.MESSAGE_EVENT.getContentType().equals(msgType)) {  //取消/关注事件类型
                 String event = xmlMap.get("Event");  //事件类型，subscribe(订阅)、unsubscribe(取消订阅)
-                xmlMap.put("MsgType", WeiXinEnum.MESSAGE_TEXT.getContentType());
                 if (event.equals("subscribe")) {
-                    replymsg = appendMsg(xmlMap, "小福利：打开支付宝首页搜索“516277305”，即可领红包");
+                    replymsg = appendMsg(xmlMap, "小福利：打开支付宝首页搜索“516277305”，即可领红包\n1、字母请用小写，汉字请打准确，特殊符号请省略掉。剧名要准确无误。\n3、重要：请保证剧名准确无误。中文译名优先，英文尽量不用。繁体不支持，简称不支持。\n感谢您的关注哦 么么哒~~");
                 }
             } else {
-                xmlMap.put("MsgType", WeiXinEnum.MESSAGE_TEXT.getContentType());
                 replymsg = appendMsg(xmlMap, "暂不支持回复此类型消息哦~");
             }
             logger.info("返回的数据xml格式=" + replymsg);
