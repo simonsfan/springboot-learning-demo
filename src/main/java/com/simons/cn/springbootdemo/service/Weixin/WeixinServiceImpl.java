@@ -40,12 +40,15 @@ public class WeixinServiceImpl extends BaseController implements WeixinService {
             String replymsg = "";
             xmlMap.put("MsgType", WeiXinEnum.MESSAGE_TEXT.getContentType());
             if (WeiXinEnum.MESSAGE_TEXT.getContentType().equals(msgType)) {  //文本类型
-                if(content.equals(ConstantEnum.ZIMU.getMsg())){  //回复字幕
+                if (content.equals(ConstantEnum.ZIMU.getMsg())) {  //回复字幕
+                    replymsg = appendMsg(xmlMap, "字幕问题，有些视频播放时没有显示字幕，请手动加载，方法：在屏幕的上方或者下方有字幕两个字点下，选择对应的字幕加载。");
+                } else if (content.equals(ConstantEnum.SECRETERROR.getMsg())) {
+                    replymsg = appendMsg(xmlMap, "客官，所有的密码都是正确的哦~手写容易看错，要注意区分1li0o等极容易看错的字符。建议直接复制密码【所有密码均为4位】，记得复制时不要带空格哦~~");
+                } else {
 
+                    
+                    replymsg = appendMsg(xmlMap, "西部链接: https://pan.baidu.com/s/1c347kIG 密码: 25m6");
                 }
-
-
-                replymsg = appendMsg(xmlMap, "西部链接: https://pan.baidu.com/s/1c347kIG 密码: 25m6");
             } else if (WeiXinEnum.MESSAGE_EVENT.getContentType().equals(msgType)) {  //取消/关注事件类型
                 String event = xmlMap.get("Event");  //事件类型，subscribe(订阅)、unsubscribe(取消订阅)
                 if (event.equals("subscribe")) {
