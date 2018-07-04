@@ -56,8 +56,8 @@ public class WeixinServiceImpl extends BaseController implements WeixinService {
                     List<Movie> movies = movieMapper.findByName(content.trim() + "%");
                     if (CollectionUtils.isNotEmpty(movies)) {
                         for (Movie movie : movies) {
-                            replymsg = replymsg + movie.getName() + movie.getLink() + "\n\n";
-                        }
+                            replymsg = replymsg + movie.getName() + movie.getLink();
+                    }
                     } else {  //未找到匹配项
                         replymsg = appendMsg(xmlMap, ConstantEnum.SUBSCRIBEREPLY.getMsg());
                     }
