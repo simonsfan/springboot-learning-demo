@@ -45,9 +45,6 @@ spring:
     encoding: UTF-8
     mode: HTML5
     content-type: text/html
-  jackson:
-    date-format: "yyyy-MM-dd HH:mm:ss"
-    time-zon.e: GMT+8
   redis:
     host: 118.190.104.220
     port: 6379
@@ -57,4 +54,7 @@ spring:
       max-idle: 100
       max-wait: 5000
       timeout: 5000
-
+logging:
+  level:
+    com.simons.cn.springbootdemo.dao.system:
+      debug

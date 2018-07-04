@@ -15,7 +15,7 @@ import javax.servlet.http.HttpServletResponse;
  */
 @Controller
 @RequestMapping("/wx")
-public class TokenNotifyController{
+public class TokenNotifyController {
 
     private static final Logger logger = LoggerFactory.getLogger(TokenNotifyController.class);
 

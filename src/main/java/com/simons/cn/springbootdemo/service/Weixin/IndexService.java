@@ -2,8 +2,6 @@ package com.simons.cn.springbootdemo.service.Weixin;
 
 import com.simons.cn.springbootdemo.bean.Movie;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 
 /**
@@ -11,10 +9,12 @@ import java.util.List;
  * 类名称：com.simons.cn.springbootdemo.service.Weixin
  * 类描述：
  * 创建人：simonsfan
- * 创建时间：2018/7/3 10:08
+ * 创建时间：2018/7/4 14:38
  */
-public interface WeixinService {
+public interface IndexService {
 
-    void notify(HttpServletRequest request, HttpServletResponse response);
+    List<Movie> selectAll(Movie movie);
+
+    void insertBatch(List<Movie> list);
 
 }

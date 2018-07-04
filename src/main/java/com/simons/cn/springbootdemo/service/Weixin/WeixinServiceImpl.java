@@ -2,13 +2,18 @@ package com.simons.cn.springbootdemo.service.Weixin;
 
 import com.simons.cn.springbootdemo.Enum.ConstantEnum;
 import com.simons.cn.springbootdemo.Enum.WeiXinEnum;
+import com.simons.cn.springbootdemo.bean.Movie;
 import com.simons.cn.springbootdemo.controller.BaseController;
+import com.simons.cn.springbootdemo.dao.system.MovieMapper;
+import org.apache.commons.collections.CollectionUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -22,6 +27,9 @@ import java.util.Map;
 public class WeixinServiceImpl extends BaseController implements WeixinService {
 
     private static final Logger logger = LoggerFactory.getLogger(WeixinServiceImpl.class);
+
+    @Autowired
+    private MovieMapper movieMapper;
 
     @Override
     public void notify(HttpServletRequest request, HttpServletResponse response) {
@@ -41,21 +49,26 @@ public class WeixinServiceImpl extends BaseController implements WeixinService {
             xmlMap.put("MsgType", WeiXinEnum.MESSAGE_TEXT.getContentType());
             if (WeiXinEnum.MESSAGE_TEXT.getContentType().equals(msgType)) {  //文本类型
                 if (content.equals(ConstantEnum.ZIMU.getMsg())) {  //回复字幕
-                    replymsg = appendMsg(xmlMap, "字幕问题，有些视频播放时没有显示字幕，请手动加载，方法：在屏幕的上方或者下方有字幕两个字点下，选择对应的字幕加载。");
+                    replymsg = appendMsg(xmlMap, ConstantEnum.ZIMUREPLY.getMsg());
                 } else if (content.equals(ConstantEnum.SECRETERROR.getMsg())) {
-                    replymsg = appendMsg(xmlMap, "客官，所有的密码都是正确的哦~手写容易看错，要注意区分1li0o等极容易看错的字符。建议直接复制密码【所有密码均为4位】，记得复制时不要带空格哦~~");
+                    replymsg = appendMsg(xmlMap, ConstantEnum.SECRETERRORREPLY.getMsg());
                 } else {
-
-                    
-                    replymsg = appendMsg(xmlMap, "西部链接: https://pan.baidu.com/s/1c347kIG 密码: 25m6");
+                    List<Movie> movies = movieMapper.findByName(content.trim() + "%");
+                    if (CollectionUtils.isNotEmpty(movies)) {
+                        for (Movie movie : movies) {
+                            replymsg = replymsg + movie.getName() + movie.getLink() + "\n\n";
+                        }
+                    } else {  //未找到匹配项
+                        replymsg = appendMsg(xmlMap, ConstantEnum.SUBSCRIBEREPLY.getMsg());
+                    }
                 }
             } else if (WeiXinEnum.MESSAGE_EVENT.getContentType().equals(msgType)) {  //取消/关注事件类型
                 String event = xmlMap.get("Event");  //事件类型，subscribe(订阅)、unsubscribe(取消订阅)
                 if (event.equals("subscribe")) {
-                    replymsg = appendMsg(xmlMap, "小福利：打开支付宝首页搜索“516277305”，即可领红包\n1、字母请用小写，汉字请打准确，特殊符号请省略掉。剧名要准确无误。\n\n3、重要：请保证剧名准确无误。中文译名优先，英文尽量不用。繁体不支持，简称不支持。\n\n感谢您的关注哦 么么哒~~");
+                    replymsg = appendMsg(xmlMap, ConstantEnum.SUBSCRIBEREPLY.getMsg());
                 }
             } else {
-                replymsg = appendMsg(xmlMap, "暂不支持回复此类型消息哦~");
+                replymsg = appendMsg(xmlMap, ConstantEnum.NOSUPPORTREPLY.getMsg());
             }
             logger.info("返回的数据xml格式=" + replymsg);
             response.getWriter().println(replymsg);

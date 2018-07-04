@@ -2,7 +2,6 @@ package com.simons.cn.springbootdemo.dao.system;
 
 
 import com.simons.cn.springbootdemo.bean.ActivitySystemVariable;
-import org.apache.ibatis.annotations.Mapper;
 
 //@Mapper
 public interface ActivitySystemVariableMapper {
