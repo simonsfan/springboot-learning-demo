@@ -121,8 +121,8 @@ public class IndexController {
     }
 
    @RequestMapping("/")
-    public String login(Model model, Movie movie) {
-        return "/login";
+    public String login() {
+        return "login";
     }
 
 
