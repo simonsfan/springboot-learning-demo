@@ -30,7 +30,7 @@ import java.util.List;
 public class IndexController {
 
     @Autowired
-    private UrlInfo urlInfo1; //常量封装类-测试
+    private UrlInfo urlInfo; //常量封装类-测试
 
     @Autowired
     private IndexService indexService;
@@ -65,7 +65,7 @@ public class IndexController {
                     totalNum += sheet.getLastRowNum() + 1;
                 }
                 for (int rowNum = 1; rowNum < sheet.getPhysicalNumberOfRows(); rowNum++) {  //rowNum取1因为有一行表头
-                    Row row = sheet.getRow(rowNum);
+                   /* Row row = sheet.getRow(rowNum);
                     Cell cell0 = row.getCell(0);
                     Cell cell1 = row.getCell(1);
                     Cell cell2 = row.getCell(2);
@@ -84,7 +84,27 @@ public class IndexController {
                     movie.setLink(link);
                     movie.setOriginal(original);
                     String passwd = link.substring(link.lastIndexOf(":") + 1).trim();
+                    movie.setPasswd(passwd);*/
+
+                    Row row = sheet.getRow(rowNum);
+                    Cell cell2 = row.getCell(2);
+                    Cell cell3 = row.getCell(3);
+                    if (cell2 == null || cell3 == null) {
+                        continue;
+                    }
+                    String name = this.getCellValue(cell2);
+                    String original = this.getCellValue(cell3);
+//                当你沉睡时链接:https://pan.baidu.com/s/1i67IQK9 密码:en3s
+                    String moviename = name.substring(0, name.indexOf("链接"));
+
+                    Movie movie = new Movie();
+                    movie.setName(moviename);
+                    movie.setType("电影");
+                    movie.setLink(name);
+                    movie.setOriginal(original);
+                    String passwd = name.substring(name.lastIndexOf(":") + 1).trim();
                     movie.setPasswd(passwd);
+
                     list.add(movie);
                 }
                 indexService.insertBatch(list);
@@ -138,5 +158,13 @@ public class IndexController {
             throw new IllegalArgumentException("我发生异常啦……");
         }
         return "hello";
+    }
+
+    public static void main(String[] args) {
+        String name = "当你沉睡时链接:https://pan.baidu.com/s/1i67IQK9 密码:en3s";
+        String substring = name.substring(0, name.indexOf("链接"));
+        String passwd = name.substring(name.lastIndexOf(":") + 1).trim();
+        System.out.println("name="+substring);
+        System.out.println("pass="+passwd);
     }
 }
