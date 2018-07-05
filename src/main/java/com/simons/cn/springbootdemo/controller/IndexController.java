@@ -112,13 +112,19 @@ public class IndexController {
      * @param movie
      * @return
      */
-    @RequestMapping("/")
+    @RequestMapping("/index")
     public String doDefaultView(Model model, Movie movie) {
         List<Movie> movies = indexService.selectAll(movie);
         model.addAttribute("movieobj", movie);
         model.addAttribute("movielist", movies);
         return "/index";
     }
+
+   @RequestMapping("/")
+    public String login(Model model, Movie movie) {
+        return "/login";
+    }
+
 
     /**
      * 测试全局异常统一处理
