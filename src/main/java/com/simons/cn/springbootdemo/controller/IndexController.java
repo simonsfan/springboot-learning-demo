@@ -65,7 +65,7 @@ public class IndexController {
                     totalNum += sheet.getLastRowNum() + 1;
                 }
                 for (int rowNum = 1; rowNum < sheet.getPhysicalNumberOfRows(); rowNum++) {  //rowNum取1因为有一行表头
-                   /* Row row = sheet.getRow(rowNum);
+                    Row row = sheet.getRow(rowNum);
                     Cell cell0 = row.getCell(0);
                     Cell cell1 = row.getCell(1);
                     Cell cell2 = row.getCell(2);
@@ -84,9 +84,9 @@ public class IndexController {
                     movie.setLink(link);
                     movie.setOriginal(original);
                     String passwd = link.substring(link.lastIndexOf(":") + 1).trim();
-                    movie.setPasswd(passwd);*/
+                    movie.setPasswd(passwd);
 
-                    Row row = sheet.getRow(rowNum);
+                 /*   Row row = sheet.getRow(rowNum);
                     Cell cell2 = row.getCell(2);
                     Cell cell3 = row.getCell(3);
                     if (cell2 == null || cell3 == null) {
@@ -104,7 +104,7 @@ public class IndexController {
                     movie.setOriginal(original);
                     String passwd = name.substring(name.lastIndexOf(":") + 1).trim();
                     movie.setPasswd(passwd);
-
+*/
                     list.add(movie);
                 }
                 indexService.insertBatch(list);
