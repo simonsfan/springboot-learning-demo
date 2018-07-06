@@ -10,6 +10,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.jta.WebSphereUowTransactionManager;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -56,8 +57,9 @@ public class WeixinServiceImpl extends BaseController implements WeixinService {
                     List<Movie> movies = movieMapper.findByName(content.trim() + "%");
                     if (CollectionUtils.isNotEmpty(movies)) {
                         for (Movie movie : movies) {
-                            replymsg = replymsg + movie.getName() + movie.getLink()+"\n\n";
-                    }
+                            replymsg = replymsg + movie.getLink()+"\n\n";
+                        }
+                        replymsg.substring(0,replymsg.lastIndexOf("\n\n"));
                     replymsg=appendMsg(xmlMap,replymsg);
                     } else {  //未找到匹配项
                         replymsg = appendMsg(xmlMap, ConstantEnum.SUBSCRIBEREPLY.getMsg());
@@ -89,6 +91,7 @@ public class WeixinServiceImpl extends BaseController implements WeixinService {
         String replymsg = "<xml><ToUserName><![CDATA[" + xmlMap.get("FromUserName") + "]]></ToUserName><FromUserName><![CDATA[" + xmlMap.get("ToUserName") + "]]></FromUserName><CreateTime>" + xmlMap.get("CreateTime") + "</CreateTime><MsgType><![CDATA[" + xmlMap.get("MsgType") + "]]></MsgType><Content><![CDATA[" + content + "]]></Content></xml>";
         return replymsg;
     }
+
 
 
 }
