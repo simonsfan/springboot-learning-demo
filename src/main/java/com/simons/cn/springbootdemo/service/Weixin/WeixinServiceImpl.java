@@ -59,8 +59,7 @@ public class WeixinServiceImpl extends BaseController implements WeixinService {
                         for (Movie movie : movies) {
                             replymsg = replymsg + movie.getLink()+"\n\n";
                         }
-                        replymsg.substring(0,replymsg.lastIndexOf("\n\n"));
-                    replymsg=appendMsg(xmlMap,replymsg);
+                    replymsg=appendMsg(xmlMap,replymsg+"请把91电影社分享给你的朋友哦 么么哒~~");
                     } else {  //未找到匹配项
                         replymsg = appendMsg(xmlMap, ConstantEnum.SUBSCRIBEREPLY.getMsg());
                     }
