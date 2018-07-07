@@ -2,8 +2,6 @@ package com.simons.cn.springbootdemo.exception;
 
 import com.simons.cn.springbootdemo.util.Result;
 import com.simons.cn.springbootdemo.util.ResultUtil;
-import org.springframework.web.bind.annotation.ControllerAdvice;
-import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 /**
@@ -13,11 +11,11 @@ import org.springframework.web.bind.annotation.ResponseBody;
  * 创建人：simonsfan
  * 创建时间：2018/6/28 14:30
  */
-@ControllerAdvice
+//@ControllerAdvice
 public class ExceptionHandle {
 
     @ResponseBody
-    @ExceptionHandler
+//    @ExceptionHandler
     public Result handle(Exception e) {
         if (e instanceof GlobalException) {
             GlobalException ge = (GlobalException) e;
