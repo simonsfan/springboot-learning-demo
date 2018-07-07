@@ -10,7 +10,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.jta.WebSphereUowTransactionManager;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -59,9 +58,9 @@ public class WeixinServiceImpl extends BaseController implements WeixinService {
                         for (Movie movie : movies) {
                             replymsg = replymsg + movie.getLink()+"\n\n";
                         }
-                    replymsg=appendMsg(xmlMap,replymsg+"请把91电影社分享给你的朋友哦 么么哒~~");
+                    replymsg=appendMsg(xmlMap,replymsg+"记得把91电影社分享给你的朋友哦 么么哒~");
                     } else {  //未找到匹配项
-                        replymsg = appendMsg(xmlMap, ConstantEnum.SUBSCRIBEREPLY.getMsg());
+                        replymsg = appendMsg(xmlMap, ConstantEnum.NOMATCH.getMsg());
                     }
                 }
             } else if (WeiXinEnum.MESSAGE_EVENT.getContentType().equals(msgType)) {  //取消/关注事件类型

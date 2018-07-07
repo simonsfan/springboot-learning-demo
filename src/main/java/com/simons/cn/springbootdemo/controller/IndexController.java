@@ -3,7 +3,12 @@ package com.simons.cn.springbootdemo.controller;
 import com.simons.cn.springbootdemo.bean.Movie;
 import com.simons.cn.springbootdemo.bean.UrlInfo;
 import com.simons.cn.springbootdemo.service.Weixin.IndexService;
+import com.simons.cn.springbootdemo.util.GuavaRateLimiterService;
+import com.simons.cn.springbootdemo.util.Result;
+import com.simons.cn.springbootdemo.util.ResultUtil;
 import org.apache.poi.ss.usermodel.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -29,11 +34,16 @@ import java.util.List;
 @Controller
 public class IndexController {
 
+    private static final Logger log= LoggerFactory.getLogger(IndexController.class);
+
     @Autowired
     private UrlInfo urlInfo; //常量封装类-测试
 
     @Autowired
     private IndexService indexService;
+
+    @Autowired
+    private GuavaRateLimiterService rateLimiterService;
 
     /**
      * 导入功能，暂时先实现一个最简单的版本，后期完善
@@ -160,11 +170,39 @@ public class IndexController {
         return "hello";
     }
 
-    public static void main(String[] args) {
-        String name = "当你沉睡时链接:https://pan.baidu.com/s/1i67IQK9 密码:en3s";
-        String substring = name.substring(0, name.indexOf("链接"));
-        String passwd = name.substring(name.lastIndexOf(":") + 1).trim();
-        System.out.println("name="+substring);
-        System.out.println("pass="+passwd);
+    /**
+     * 测试RateLimiter限流
+     *
+     * @return
+     */
+    @ResponseBody
+    @RequestMapping("/ratelimiter")
+    public Result testRateLimiter(){
+        if(rateLimiterService.tryAcquire()){
+            log.info("成功获取许可");
+            return ResultUtil.success1(1001,"成功获取许可");
+        }
+        log.info("未获取到许可");
+        return ResultUtil.success1(1002,"未获取到许可");
     }
+
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

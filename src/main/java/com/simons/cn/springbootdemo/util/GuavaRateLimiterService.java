@@ -11,7 +11,7 @@ import org.springframework.stereotype.Service;
  * 创建时间：2018/7/6 18:33
  */
 @Service
-public class GuavaRateLimiterUtil {
+public class GuavaRateLimiterService {
 
     RateLimiter rateLimiter = RateLimiter.create(5.0);
 
@@ -23,6 +23,5 @@ public class GuavaRateLimiterUtil {
     public boolean tryAcquire() {
         return rateLimiter.tryAcquire();
     }
-
 
 }
