@@ -36,6 +36,8 @@ public class WeixinServiceImpl extends BaseController implements WeixinService {
         String fromUserName = "";
         String toUserName = "";
         try {
+            //  {CreateTime=1530965702, EventKey=, Event=subscribe, ToUserName=gh_330c758fa970, FromUserName=ocLpZ0446RKH1FH05Zn2ZbvPF_so, MsgType=event}
+
             request.setCharacterEncoding("UTF-8");
             response.setCharacterEncoding("UTF-8");
             Map<String, String> xmlMap = this.parseXml(request);
@@ -44,10 +46,10 @@ public class WeixinServiceImpl extends BaseController implements WeixinService {
             String msgType = xmlMap.get("MsgType");
             fromUserName = xmlMap.get("FromUserName");
             toUserName = xmlMap.get("ToUserName");
-            String content = xmlMap.get("Content").trim();  //用户发送的内容
             String replymsg = "";
             xmlMap.put("MsgType", WeiXinEnum.MESSAGE_TEXT.getContentType());
             if (WeiXinEnum.MESSAGE_TEXT.getContentType().equals(msgType)) {  //文本类型
+                String content = xmlMap.get("Content").trim();  //用户发送的内容
                 if (content.equals(ConstantEnum.ZIMU.getMsg())) {  //回复字幕
                     replymsg = appendMsg(xmlMap, ConstantEnum.ZIMUREPLY.getMsg());
                 } else if (content.equals(ConstantEnum.SECRETERROR.getMsg())) {
