@@ -12,7 +12,7 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public class GuavaRateLimiterService {
-
+    /* 限制每秒访问数5个 */
     RateLimiter rateLimiter = RateLimiter.create(5.0);
 
     /**

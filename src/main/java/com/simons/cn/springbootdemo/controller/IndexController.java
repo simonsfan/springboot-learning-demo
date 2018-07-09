@@ -122,6 +122,7 @@ public class IndexController {
                 }
                 indexService.insertBatch(list);
             }
+            cardExcel.delete();
         } catch (Exception e) {
             e.printStackTrace();
             log.error("导入失败异常="+e);
