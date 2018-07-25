@@ -64,8 +64,8 @@ public class WeixinServiceImpl extends BaseController implements WeixinService {
                         }
                     replymsg=appendMsg(xmlMap,replymsg+"记得把91电影社分享给你的朋友哦 么么哒~");
                     } else {  //未找到匹配项
-//                        replymsg = appendMsg(xmlMap, ConstantEnum.NOMATCH.getMsg());
-                        replymsg = appendNewsMsg(xmlMap, ConstantEnum.NOMATCH.getMsg());
+                        replymsg = appendMsg(xmlMap, ConstantEnum.NOMATCH.getMsg());
+//                        replymsg = appendNewsMsg(xmlMap, ConstantEnum.NOMATCH.getMsg());
                     }
                 }
             } else if (WeiXinEnum.MESSAGE_EVENT.getContentType().equals(msgType)) {  //取消/关注事件类型
