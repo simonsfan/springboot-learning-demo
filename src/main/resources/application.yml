@@ -1,9 +1,9 @@
 server:
   port: 80
 #  servlet:
- #   context-path: /root
-
-#定义项目使用到的一些常量
+ #
+#定义项   context-path: /root
+#目使用到的一些常量
 url:
   payNotifyUrl: http://vip.tq.com/setrecord
 

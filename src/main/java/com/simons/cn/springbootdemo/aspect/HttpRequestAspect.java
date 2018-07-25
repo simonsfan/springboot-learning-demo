@@ -1,5 +1,17 @@
 package com.simons.cn.springbootdemo.aspect;
 
+import org.aspectj.lang.JoinPoint;
+import org.aspectj.lang.annotation.After;
+import org.aspectj.lang.annotation.AfterReturning;
+import org.aspectj.lang.annotation.Before;
+import org.aspectj.lang.annotation.Pointcut;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
+
+import javax.servlet.http.HttpServletRequest;
+
 /**
  * 项目名称：springbootdemo
  * 类名称：com.simons.cn.springbootdemo
@@ -11,12 +23,12 @@ package com.simons.cn.springbootdemo.aspect;
 //@Component
 public class HttpRequestAspect {
 
-    /*private static final Logger log = LoggerFactory.getLogger(HttpRequestAspect.class);
+    private static final Logger log = LoggerFactory.getLogger(HttpRequestAspect.class);
 
     public static long startTime;
     public static long endTime;
 
-    @Pointcut("execution(public * com.simons.cn.springbootdemo.controller.*.*(..))")
+/*    @Pointcut("execution(public * com.simons.cn.springbootdemo.controller.*.*(..))")
     public void print() {
 
     }

@@ -152,7 +152,7 @@ public class FilePortUtil {
         try {
             String fieldName = field.getName();
             PropertyDescriptor pd = new PropertyDescriptor(fieldName, t.getClass());
-            Method method = pd.getReadMethod();
+            Method method = pd.getReadMethod();  //得到的是bean对应的get方法
             return method.invoke(t);
         } catch (Exception e) {
             return null;
