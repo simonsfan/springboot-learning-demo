@@ -54,15 +54,18 @@ public class WeixinServiceImpl extends BaseController implements WeixinService {
                     replymsg = appendMsg(xmlMap, ConstantEnum.ZIMUREPLY.getMsg());
                 } else if (content.equals(ConstantEnum.SECRETERROR.getMsg())) {
                     replymsg = appendMsg(xmlMap, ConstantEnum.SECRETERRORREPLY.getMsg());
-                } else {
-                    List<Movie> movies = movieMapper.findByName(content.trim() + "%");
+                } else if (content.equals(ConstantEnum.ZHOGNGZI.getMsg())){
+                    replymsg = appendMsg(xmlMap, ConstantEnum.ZHOGNGZIERROR.getMsg());
+                }else {
+                    List<Movie> movies = movieMapper.findByName("%"+content.trim() + "%");
                     if (CollectionUtils.isNotEmpty(movies)) {
                         for (Movie movie : movies) {
                             replymsg = replymsg + movie.getLink()+"\n\n";
                         }
                     replymsg=appendMsg(xmlMap,replymsg+"记得把91电影社分享给你的朋友哦 么么哒~");
                     } else {  //未找到匹配项
-                        replymsg = appendMsg(xmlMap, ConstantEnum.NOMATCH.getMsg());
+//                        replymsg = appendMsg(xmlMap, ConstantEnum.NOMATCH.getMsg());
+                        replymsg = appendNewsMsg(xmlMap, ConstantEnum.NOMATCH.getMsg());
                     }
                 }
             } else if (WeiXinEnum.MESSAGE_EVENT.getContentType().equals(msgType)) {  //取消/关注事件类型
@@ -81,7 +84,7 @@ public class WeixinServiceImpl extends BaseController implements WeixinService {
     }
 
     /**
-     * 拼接回复消息，注意节点间一定不能有空格存在
+     * 拼接回复普通消息，注意节点间一定不能有空格存在
      *
      * @param xmlMap
      * @param content
@@ -90,6 +93,13 @@ public class WeixinServiceImpl extends BaseController implements WeixinService {
     public static String appendMsg(Map xmlMap, String content) {
         String replymsg = "<xml><ToUserName><![CDATA[" + xmlMap.get("FromUserName") + "]]></ToUserName><FromUserName><![CDATA[" + xmlMap.get("ToUserName") + "]]></FromUserName><CreateTime>" + xmlMap.get("CreateTime") + "</CreateTime><MsgType><![CDATA[" + xmlMap.get("MsgType") + "]]></MsgType><Content><![CDATA[" + content + "]]></Content></xml>";
         return replymsg;
+    }
+
+    public static String appendNewsMsg(Map xmlMap, String content){
+//        http://sr3.pplive.cn/cms/38/91/689e7cb754738d8bb477e449b8ccbea4.jpg
+    /*    <xml><ToUserName>< ![CDATA[toUser] ]></ToUserName><FromUserName>< ![CDATA[fromUser] ]></FromUserName><CreateTime>12345678</CreateTime><MsgType>< ![CDATA[news] ]></MsgType><ArticleCount>2</ArticleCount><Articles><item><Title>< ![CDATA[title1] ]></Title> <Description>< ![CDATA[description1] ]></Description><PicUrl>< ![CDATA[picurl] ]></PicUrl><Url>< ![CDATA[url] ]></Url></item><item><Title>< ![CDATA[title] ]></Title><Description>< ![CDATA[description] ]></Description><PicUrl>< ![CDATA[picurl] ]></PicUrl><Url>< ![CDATA[url] ]></Url></item></Articles></xml>*/
+        String replyMsg = "<xml><ToUserName><![CDATA["+xmlMap.get("FromUserName")+"]]></ToUserName><FromUserName><![CDATA["+xmlMap.get("ToUserName") +"]]></FromUserName><CreateTime>"+xmlMap.get("CreateTime") +"</CreateTime><MsgType><![CDATA[news] ]></MsgType><ArticleCount>1</ArticleCount><Articles><item><Title><![CDATA[常见问题及解决办法]]></Title><Description><![CDATA["+"大家好啊！我是你们的小宇~【特别说明：本号资源一切免费。请仔细阅读下面的文字哦，能解决您遇到的部分问题哦。】"+"]]></Description><PicUrl><![CDATA[http://sr3.pplive.cn/cms/38/91/689e7cb754738d8bb477e449b8ccbea4.jpg]]></PicUrl><Url><![CDATA[www.baidu.com]]></Url></item></Articles></xml>";
+        return replyMsg;
     }
 
 
