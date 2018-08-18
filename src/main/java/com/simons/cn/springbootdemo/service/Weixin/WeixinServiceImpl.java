@@ -62,7 +62,7 @@ public class WeixinServiceImpl extends BaseController implements WeixinService {
                         for (Movie movie : movies) {
                             replymsg = replymsg + movie.getLink()+"\n\n";
                         }
-                    replymsg=appendMsg(xmlMap,replymsg+"记得把91电影社分享给你的朋友哦 么么哒~");
+                    replymsg=appendMsg(xmlMap,replymsg+"如果资源失效，请看官回复以 电影名称+失效 的格式回复一下，小编会第一时间修复的哦 么么哒~");
                     } else {  //未找到匹配项
                         replymsg = appendMsg(xmlMap, ConstantEnum.NOMATCH.getMsg());
 //                        replymsg = appendNewsMsg(xmlMap, ConstantEnum.NOMATCH.getMsg());
