@@ -6,7 +6,7 @@ import lombok.extern.slf4j.Slf4j;
  * 代理类
  */
 @Slf4j
-public class OrderServiceProxy extends OrderServiceImpl{
+public class OrderServiceLogProxy extends OrderServiceImpl{
     @Override
     public void reduceStock() {
         log.info("预减库存开始……");

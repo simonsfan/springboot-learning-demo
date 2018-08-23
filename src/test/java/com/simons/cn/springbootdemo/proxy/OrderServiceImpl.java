@@ -1,11 +1,20 @@
-package com.simons.cn.springbootdemo;
+package com.simons.cn.springbootdemo.proxy;
+
+
+import lombok.extern.slf4j.Slf4j;
 
 /**
- * 项目名称：springbootdemo
- * 类名称：com.simons.cn.springbootdemo
- * 类描述：
- * 创建人：simonsfan
- * 创建时间：2018/8/22 14:17
+ * 业务实现类
  */
-public class OrderServiceImpl {
+@Slf4j
+public class OrderServiceImpl implements OrderService {
+    @Override
+    public void reduceStock() {
+        try {
+            log.info("预减库存中……");
+            Thread.sleep(1000);
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+    }
 }

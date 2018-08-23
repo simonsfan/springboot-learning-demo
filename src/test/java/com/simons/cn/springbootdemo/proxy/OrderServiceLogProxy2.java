@@ -1,11 +1,23 @@
 package com.simons.cn.springbootdemo.proxy;
 
+import lombok.extern.slf4j.Slf4j;
+
 /**
- * 项目名称：springbootdemo
- * 类名称：com.simons.cn.springbootdemo.proxy
- * 类描述：
- * 创建人：simonsfan
- * 创建时间：2018/8/22 15:05
+ * 聚合方式实现静态代理：代理类中引入业务类
  */
-public class OrderServiceLogProxy2 {
+@Slf4j
+public class OrderServiceLogProxy2 implements OrderService {
+
+    private OrderServiceImpl orderService;
+
+    public OrderServiceLogProxy2(OrderServiceImpl orderService) {
+        this.orderService = orderService;
+    }
+
+    @Override
+    public void reduceStock() {
+        log.info("预减库存开始……");
+        orderService.reduceStock();
+        log.info("预减库存结束……");
+    }
 }

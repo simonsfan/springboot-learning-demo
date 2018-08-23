@@ -1,11 +1,28 @@
 package com.simons.cn.springbootdemo.chainresponsibility;
 
 /**
- * 项目名称：springbootdemo
- * 类名称：com.simons.cn.springbootdemo.chainresponsibility
- * 类描述：
- * 创建人：simonsfan
- * 创建时间：2018/8/23 15:04
+ * 责任链模式
  */
-public class Handler {
+public abstract class Handler {
+
+    private Handler handler;
+
+    public Handler getHandler() {
+        return handler;
+    }
+
+    public void setHandler(Handler handler) {
+        this.handler = handler;
+    }
+
+    public void execute(){
+        handlerProcess();
+        if(this.handler != null){
+            handler.execute();
+        }
+
+    }
+
+    protected abstract void handlerProcess();
+
 }

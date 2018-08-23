@@ -5,7 +5,7 @@ import org.junit.Test;
 import java.lang.reflect.Proxy;
 
 
-public class CartTest {
+public class ProxyTest {
         /**
      * 测试继承方式实现的静态代理
      */
@@ -54,7 +54,6 @@ public class CartTest {
      */
     @Test
     public void testDynamicLogAndPermissProxy() {
-        System.getProperties().put("sun.misc.ProxyGenerator.saveGeneratedFiles","true");
         OrderServiceImpl orderService = new OrderServiceImpl();
         Class<?> clazz = orderService.getClass();
         DynamicLogProxy logProxyHandler = new DynamicLogProxy(orderService);

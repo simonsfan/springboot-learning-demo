@@ -1,11 +1,25 @@
 package com.simons.cn.springbootdemo.chainresponsibility;
 
+import java.util.List;
+
 /**
- * 项目名称：springbootdemo
- * 类名称：com.simons.cn.springbootdemo.chainresponsibility
- * 类描述：
- * 创建人：simonsfan
- * 创建时间：2018/8/23 15:20
+ * 责任链模式优化
  */
 public class Chain {
+
+    private List<HandlerChain> handlerChainList;
+
+    public Chain(List<HandlerChain> handlerChainList) {
+        this.handlerChainList = handlerChainList;
+    }
+
+    private int index = 0;
+
+    public void proceed() {
+        if (index >= handlerChainList.size()) {
+            return;
+        }
+        handlerChainList.get(index++).execute(this);
+    }
+
 }
