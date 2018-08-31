@@ -1,6 +1,5 @@
 package com.simons.cn.springbootdemo.aspect;
 
-import com.simons.cn.springbootdemo.service.Weixin.WeixinServiceImpl;
 import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
@@ -23,10 +22,5 @@ public class ApplicationContextHolder implements ApplicationContextAware {
     @Override
     public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
         this.apc = applicationContext;
-    }
-
-    public static void main(String[] args) {
-        WeixinServiceImpl proxy = ApplicationContextHolder.getApplicationContext().getBean(WeixinServiceImpl.class);
-        System.out.println(proxy);
     }
 }
