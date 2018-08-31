@@ -5,8 +5,6 @@ import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 
-import java.util.concurrent.Executors;
-
 /**
  * 项目名称：springbootdemo
  * 类名称：com.simons.cn.springbootdemo.aspect
@@ -19,7 +17,6 @@ public class ApplicationContextHolder implements ApplicationContextAware {
     private static ApplicationContext apc;
 
     public static ApplicationContext getApplicationContext() {
-        Executors.newWorkStealingPool();
         return apc;
     }
 
