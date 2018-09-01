@@ -148,6 +148,21 @@ public class IndexController {
      * @param movie
      * @return
      */
+    @RequestMapping("/movie/update")
+    public String updateMovieById(Model model, Movie movie) {
+        List<Movie> movies = indexService.selectAll(movie);
+        model.addAttribute("movieobj", movie);
+        model.addAttribute("movielist", movies);
+        return "/index";
+    }
+
+    /**
+     * 电影后台首页展示页
+     *
+     * @param model
+     * @param movie
+     * @return
+     */
     @RequestMapping("/index")
     public String doDefaultView(Model model, Movie movie) {
         List<Movie> movies = indexService.selectAll(movie);
@@ -156,10 +171,10 @@ public class IndexController {
         return "/index";
     }
 
-   @RequestMapping("/")
+/*   @RequestMapping("/")
     public String login() {
         return "login";
-    }
+    }*/
 
 
     /**
