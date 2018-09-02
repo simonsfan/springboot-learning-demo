@@ -3,8 +3,12 @@ package com.simons.cn.springbootdemo.service.Weixin;
 import com.simons.cn.springbootdemo.Enum.ConstantEnum;
 import com.simons.cn.springbootdemo.Enum.WeiXinEnum;
 import com.simons.cn.springbootdemo.bean.Movie;
+import com.simons.cn.springbootdemo.bean.MovieInvalid;
+import com.simons.cn.springbootdemo.bean.MovieRecord;
 import com.simons.cn.springbootdemo.controller.BaseController;
+import com.simons.cn.springbootdemo.dao.system.MovieInvalidMapper;
 import com.simons.cn.springbootdemo.dao.system.MovieMapper;
+import com.simons.cn.springbootdemo.dao.system.MovieRecordMapper;
 import org.apache.commons.collections.CollectionUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -13,6 +17,7 @@ import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -30,6 +35,12 @@ public class WeixinServiceImpl extends BaseController implements WeixinService {
 
     @Autowired
     private MovieMapper movieMapper;
+
+    @Autowired
+    private MovieRecordMapper recordMapper;
+
+    @Autowired
+    private MovieInvalidMapper invalidMapper;
 
     @Override
     public void notify(HttpServletRequest request, HttpServletResponse response) {
@@ -50,22 +61,25 @@ public class WeixinServiceImpl extends BaseController implements WeixinService {
             xmlMap.put("MsgType", WeiXinEnum.MESSAGE_TEXT.getContentType());
             if (WeiXinEnum.MESSAGE_TEXT.getContentType().equals(msgType)) {  //文本类型
                 String content = xmlMap.get("Content").trim();  //用户发送的内容
-                if (content.equals(ConstantEnum.ZIMU.getMsg())) {  //回复字幕
+                if(content.indexOf("失效") !=-1){  //说明用户发送的是失效电影内容
+                    invalidMapper.insert(new MovieInvalid(content,new Date()));
+                    replymsg = appendMsg(xmlMap, ConstantEnum.INVALID.getMsg());
+                    response.getWriter().println(replymsg);
+                }
+                if (content.equals(ConstantEnum.ZIMU.getMsg())) {
                     replymsg = appendMsg(xmlMap, ConstantEnum.ZIMUREPLY.getMsg());
                 } else if (content.equals(ConstantEnum.SECRETERROR.getMsg())) {
                     replymsg = appendMsg(xmlMap, ConstantEnum.SECRETERRORREPLY.getMsg());
-                } else if (content.equals(ConstantEnum.ZHOGNGZI.getMsg())){
-                    replymsg = appendMsg(xmlMap, ConstantEnum.ZHOGNGZIERROR.getMsg());
-                }else {
-                    List<Movie> movies = movieMapper.findByName("%"+content.trim() + "%");
+                } else {
+                    List<Movie> movies = movieMapper.findByName("%"+content + "%");
                     if (CollectionUtils.isNotEmpty(movies)) {
                         for (Movie movie : movies) {
                             replymsg = replymsg + movie.getLink()+"\n\n";
                         }
                     replymsg=appendMsg(xmlMap,replymsg+"如果资源失效，请看官回复以 电影名称+失效 的格式回复一下，小编会第一时间修复的哦 么么哒~");
                     } else {  //未找到匹配项
+                        recordMapper.insert(new MovieRecord(content,new Date()));
                         replymsg = appendMsg(xmlMap, ConstantEnum.NOMATCH.getMsg());
-//                        replymsg = appendNewsMsg(xmlMap, ConstantEnum.NOMATCH.getMsg());
                     }
                 }
             } else if (WeiXinEnum.MESSAGE_EVENT.getContentType().equals(msgType)) {  //取消/关注事件类型
@@ -95,12 +109,18 @@ public class WeixinServiceImpl extends BaseController implements WeixinService {
         return replymsg;
     }
 
+    /**
+     * 动态拼接回复内容
+     *
+     * @param xmlMap
+     * @param content
+     * @return  示例：<xml><ToUserName>< ![CDATA[toUser] ]></ToUserName><FromUserName>< ![CDATA[fromUser] ]></FromUserName><CreateTime>12345678</CreateTime><MsgType>< ![CDATA[news] ]></MsgType><ArticleCount>2</ArticleCount><Articles><item><Title>< ![CDATA[title1] ]></Title> <Description>< ![CDATA[description1] ]></Description><PicUrl>< ![CDATA[picurl] ]></PicUrl><Url>< ![CDATA[url] ]></Url></item><item><Title>< ![CDATA[title] ]></Title><Description>< ![CDATA[description] ]></Description><PicUrl>< ![CDATA[picurl] ]></PicUrl><Url>< ![CDATA[url] ]></Url></item></Articles></xml>
+     */
     public static String appendNewsMsg(Map xmlMap, String content){
-//        http://sr3.pplive.cn/cms/38/91/689e7cb754738d8bb477e449b8ccbea4.jpg
-    /*    <xml><ToUserName>< ![CDATA[toUser] ]></ToUserName><FromUserName>< ![CDATA[fromUser] ]></FromUserName><CreateTime>12345678</CreateTime><MsgType>< ![CDATA[news] ]></MsgType><ArticleCount>2</ArticleCount><Articles><item><Title>< ![CDATA[title1] ]></Title> <Description>< ![CDATA[description1] ]></Description><PicUrl>< ![CDATA[picurl] ]></PicUrl><Url>< ![CDATA[url] ]></Url></item><item><Title>< ![CDATA[title] ]></Title><Description>< ![CDATA[description] ]></Description><PicUrl>< ![CDATA[picurl] ]></PicUrl><Url>< ![CDATA[url] ]></Url></item></Articles></xml>*/
         String replyMsg = "<xml><ToUserName><![CDATA["+xmlMap.get("FromUserName")+"]]></ToUserName><FromUserName><![CDATA["+xmlMap.get("ToUserName") +"]]></FromUserName><CreateTime>"+xmlMap.get("CreateTime") +"</CreateTime><MsgType><![CDATA[news]]></MsgType><ArticleCount>1</ArticleCount><Articles><item><Title><![CDATA[常见问题及解决办法]]></Title><Description><![CDATA["+"大家好啊！我是你们的小饭~特别说明：本号资源一切免费。请仔细阅读下面的文字哦，能解决您遇到的部分问题哦"+"]]></Description><PicUrl><![CDATA[http://sr3.pplive.cn/cms/38/91/689e7cb754738d8bb477e449b8ccbea4.jpg]]></PicUrl><Url><![CDATA[]]></Url></item></Articles></xml>";
         return replyMsg;
     }
+
 
 
 

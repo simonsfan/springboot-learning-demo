@@ -105,13 +105,13 @@
     </update>
 
 
-    <select id="selectAll" parameterType="com.simons.cn.springbootdemo.bean.Movie" resultMap="BaseResultMap">
+    <select id="selectAll" parameterType="java.util.Map" resultMap="BaseResultMap">
         select
         <include refid="Base_Column_List"/>
         from movie
         <where>
             <if test="name != null">
-                name = #{name,jdbcType=VARCHAR}
+                name like #{name}
             </if>
         </where>
     </select>

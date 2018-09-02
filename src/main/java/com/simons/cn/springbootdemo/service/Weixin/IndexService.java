@@ -3,6 +3,7 @@ package com.simons.cn.springbootdemo.service.Weixin;
 import com.simons.cn.springbootdemo.bean.Movie;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * 项目名称：springbootdemo
@@ -13,7 +14,7 @@ import java.util.List;
  */
 public interface IndexService {
 
-    List<Movie> selectAll(Movie movie);
+    List<Movie> selectAll(Map<String,Object> movie);
 
     void insertBatch(List<Movie> list);
 

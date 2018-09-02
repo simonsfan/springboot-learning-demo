@@ -6,6 +6,7 @@ import com.simons.cn.springbootdemo.service.Weixin.IndexService;
 import com.simons.cn.springbootdemo.util.GuavaRateLimiterService;
 import com.simons.cn.springbootdemo.util.Result;
 import com.simons.cn.springbootdemo.util.ResultUtil;
+import org.apache.commons.lang.StringUtils;
 import org.apache.poi.ss.usermodel.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -22,7 +23,9 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.File;
 import java.io.FileInputStream;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * 项目名称：springbootdemo
@@ -34,7 +37,7 @@ import java.util.List;
 @Controller
 public class IndexController {
 
-    private static final Logger log= LoggerFactory.getLogger(IndexController.class);
+    private static final Logger log = LoggerFactory.getLogger(IndexController.class);
 
     @Autowired
     private UrlInfo urlInfo; //常量封装类-测试
@@ -105,8 +108,8 @@ public class IndexController {
                     String name = this.getCellValue(cell2);
                     String original = this.getCellValue(cell3);
 
-                    if(!name.contains("链接")){
-                        log.info("没有链接字段的="+name);
+                    if (!name.contains("链接")) {
+                        log.info("没有链接字段的=" + name);
                         continue;
                     }
                     String moviename = name.substring(0, name.indexOf("链接"));
@@ -125,7 +128,7 @@ public class IndexController {
             cardExcel.delete();
         } catch (Exception e) {
             e.printStackTrace();
-            log.error("导入失败异常="+e);
+            log.error("导入失败异常=" + e);
             return "导入失败";
         }
         return "导入成功";
@@ -148,26 +151,19 @@ public class IndexController {
      * @param movie
      * @return
      */
-    @RequestMapping("/movie/update")
-    public String updateMovieById(Model model, Movie movie) {
-        List<Movie> movies = indexService.selectAll(movie);
-        model.addAttribute("movieobj", movie);
-        model.addAttribute("movielist", movies);
-        return "/index";
-    }
-
-    /**
-     * 电影后台首页展示页
-     *
-     * @param model
-     * @param movie
-     * @return
-     */
     @RequestMapping("/index")
     public String doDefaultView(Model model, Movie movie) {
-        List<Movie> movies = indexService.selectAll(movie);
-        model.addAttribute("movieobj", movie);
-        model.addAttribute("movielist", movies);
+        try {
+            Map<String, Object> map = new HashMap<>();
+            if (movie != null && StringUtils.isNotEmpty(movie.getName())) {
+                map.put("name", "%"+movie.getName()+"%");
+            }
+            List<Movie> movies = indexService.selectAll(map);
+            model.addAttribute("movielist", movies);
+            model.addAttribute("movie", movie);
+        } catch (Exception e) {
+            log.error("index page error:{}", e);
+        }
         return "/index";
     }
 
@@ -198,13 +194,13 @@ public class IndexController {
      */
     @ResponseBody
     @RequestMapping("/ratelimiter")
-    public Result testRateLimiter(){
-        if(rateLimiterService.tryAcquire()){
+    public Result testRateLimiter() {
+        if (rateLimiterService.tryAcquire()) {
             log.info("成功获取许可");
-            return ResultUtil.success1(1001,"成功获取许可");
+            return ResultUtil.success1(1001, "成功获取许可");
         }
         log.info("未获取到许可");
-        return ResultUtil.success1(1002,"未获取到许可");
+        return ResultUtil.success1(1002, "未获取到许可");
     }
 
 }

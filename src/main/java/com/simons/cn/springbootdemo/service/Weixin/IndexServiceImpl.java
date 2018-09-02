@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * 项目名称：springbootdemo
@@ -21,7 +22,7 @@ public class IndexServiceImpl implements IndexService {
     private MovieMapper movieMapper;
 
     @Override
-    public List<Movie> selectAll(Movie movie) {
+    public List<Movie> selectAll(Map<String,Object> movie) {
         return movieMapper.selectAll(movie);
     }
 

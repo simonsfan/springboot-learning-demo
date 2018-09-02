@@ -3,6 +3,7 @@ package com.simons.cn.springbootdemo.dao.system;
 import com.simons.cn.springbootdemo.bean.Movie;
 
 import java.util.List;
+import java.util.Map;
 
 public interface MovieMapper {
     int deleteByPrimaryKey(Long id);
@@ -17,7 +18,7 @@ public interface MovieMapper {
 
     int updateByPrimaryKey(Movie record);
 
-    List<Movie> selectAll(Movie movie);
+    List<Movie> selectAll(Map<String,Object> movie);
 
     void insertBatch(List<Movie>list);
 
