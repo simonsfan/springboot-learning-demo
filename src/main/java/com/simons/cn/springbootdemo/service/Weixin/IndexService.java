@@ -18,4 +18,6 @@ public interface IndexService {
 
     void insertBatch(List<Movie> list);
 
+    void addMovie(Movie movie);
+
 }

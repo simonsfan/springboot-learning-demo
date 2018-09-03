@@ -203,9 +203,22 @@ public class IndexController {
         return ResultUtil.success1(1002, "未获取到许可");
     }
 
-    @RequestMapping("/movie/addmovie")
+    @RequestMapping("/movie/addmovieindex")
     public  String addMovieIndex(){
         return "/addmovie";
+    }
+
+    @RequestMapping("/movie/addmovie")
+    @ResponseBody
+    public  String addMovie(Movie movie){
+        try {
+            log.info("/movie/addmovie params: name="+movie.getName()+",link="+movie.getLink());
+            indexService.addMovie(movie);
+            return ResultUtil.success(1001, "success", null).toString();
+        }catch (Exception e){
+            log.error("/movie/addmovie method: name="+movie.getName()+",exctepion="+e);
+            return ResultUtil.success(-1, "system error", null).toString();
+        }
     }
 
 }

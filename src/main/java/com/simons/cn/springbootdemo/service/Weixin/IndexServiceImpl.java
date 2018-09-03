@@ -30,4 +30,12 @@ public class IndexServiceImpl implements IndexService {
     public void insertBatch(List<Movie> list) {
         movieMapper.insertBatch(list);
     }
+
+    @Override
+    public void addMovie(Movie movie) {
+        movie.setOriginal("collection");
+        movie.setType("movie");
+        movie.setPasswd("no");
+        movieMapper.insert(movie);
+    }
 }
