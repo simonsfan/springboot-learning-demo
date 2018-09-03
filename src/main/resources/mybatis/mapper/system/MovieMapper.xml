@@ -114,6 +114,7 @@
                 name like #{name}
             </if>
         </where>
+        limit 100
     </select>
 
     <insert id="insertBatch">

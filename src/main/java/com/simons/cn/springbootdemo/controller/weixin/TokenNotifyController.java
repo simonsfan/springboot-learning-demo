@@ -24,6 +24,7 @@ public class TokenNotifyController {
 
     @RequestMapping("/tokencheck")
     public void tokenCheck(HttpServletRequest request, HttpServletResponse response) throws Exception {
+        logger.info("weixin get request begining……");
         weixinService.notify(request, response);
     }
 

@@ -203,6 +203,11 @@ public class IndexController {
         return ResultUtil.success1(1002, "未获取到许可");
     }
 
+    @RequestMapping("/movie/addmovie")
+    public  String addMovieIndex(){
+        return "/addmovie";
+    }
+
 }
 
 
