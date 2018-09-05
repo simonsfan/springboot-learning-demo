@@ -38,4 +38,9 @@ public class IndexServiceImpl implements IndexService {
         movie.setPasswd("no");
         movieMapper.insert(movie);
     }
+
+    @Override
+    public void deleteById(String id) {
+        movieMapper.deleteByPrimaryKey(Long.parseLong(id));
+    }
 }

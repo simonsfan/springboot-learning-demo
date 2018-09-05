@@ -63,7 +63,8 @@
                             <td th:text="${movie.original}"/>
                             <td th:text="${movie.type}"/>
                             <td> <input type="button" class="btn btn-round btn-success" value="修改" onclick="update()"/>
-                                <input type="button" class="btn btn-round btn-success" value="删除"/>
+                                <input type="hidden" th:value="${movie.id}" class="ddd"/>
+                                <input type="button" class="btn btn-round btn-success" th:onclick="'javascript:del('+${movie.id}+')'"   value="删除"/>
                                 <input type="button" class="btn  btn-raised btn-success" onclick="addNew()" value="新增电影资源"/>
                             </td>
                         </tr>
@@ -110,14 +111,18 @@
 <script type="text/javascript">
 
     function update(id) {
-        window.location.href="http://movie.huishiguang.com/movie/update?id="+id;
-       /* $.ajax({
-            url:
-        });*/
+       location.href="movie/update?name="+name;
     }
 
     function addNew() {
         location.href="movie/addmovieindex";
+    }
+
+    function del(id) {
+        if (!confirm("确认要删除吗?")) {
+            return;
+        }
+       location.href = "movie/del?id=" + id;
     }
 
 </script>

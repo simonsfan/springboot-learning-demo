@@ -14,10 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.FileCopyUtils;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
@@ -156,7 +153,7 @@ public class IndexController {
         try {
             Map<String, Object> map = new HashMap<>();
             if (movie != null && StringUtils.isNotEmpty(movie.getName())) {
-                map.put("name", "%"+movie.getName()+"%");
+                map.put("name", "%" + movie.getName() + "%");
             }
             List<Movie> movies = indexService.selectAll(map);
             model.addAttribute("movielist", movies);
@@ -204,21 +201,32 @@ public class IndexController {
     }
 
     @RequestMapping("/movie/addmovieindex")
-    public  String addMovieIndex(){
+    public String addMovieIndex() {
         return "/addmovie";
     }
 
     @RequestMapping("/movie/addmovie")
     @ResponseBody
-    public  String addMovie(Movie movie){
+    public String addMovie(Movie movie) {
         try {
-            log.info("/movie/addmovie params: name="+movie.getName()+",link="+movie.getLink());
+            log.info("/movie/addmovie params: name=" + movie.getName() + ",link=" + movie.getLink());
             indexService.addMovie(movie);
             return ResultUtil.success(1001, "success", null).toString();
-        }catch (Exception e){
-            log.error("/movie/addmovie method: name="+movie.getName()+",exctepion="+e);
+        } catch (Exception e) {
+            log.error("/movie/addmovie method: name=" + movie.getName() + ",exctepion=" + e);
             return ResultUtil.success(-1, "system error", null).toString();
         }
+    }
+
+    @RequestMapping("/movie/del")
+    public String del(@RequestParam(required = false, value = "id") String id) {
+        try {
+            log.info("/movie/del params: id=" + id);
+            indexService.deleteById(id);
+        } catch (Exception e) {
+            log.error("/movie/del params: id=" + id + ",exception=" + e);
+        }
+        return "redirect:/index";
     }
 
 }

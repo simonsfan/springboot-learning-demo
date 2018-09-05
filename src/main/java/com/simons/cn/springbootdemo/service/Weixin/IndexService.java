@@ -20,4 +20,6 @@ public interface IndexService {
 
     void addMovie(Movie movie);
 
+    void deleteById(String id);
+
 }
