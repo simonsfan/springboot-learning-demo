@@ -23,4 +23,6 @@ public interface MovieMapper {
     void insertBatch(List<Movie>list);
 
     List<Movie> findByName(String name);
+
+    void updateById(Map<String,Object> map);
 }

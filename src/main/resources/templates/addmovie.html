@@ -23,7 +23,7 @@
                             <h4>新增电影项</h4>
                         </div>
                     <div class="col-md-6" style="padding-left:10px;">
-                        <form action="/movie/addmovie" method="post">
+                        <form action="#" method="post">
                             <div class="form-group"><label class="col-sm-2 control-label text-right">电影名称:</label>
                                 <div class="col-sm-10"><input type="text" name="name" id="name" class="form-control"></div>
                             </div>
@@ -32,7 +32,8 @@
                                 <div class="col-sm-10"><input type="text" name="link" id="link" class="form-control"></div>
                             </div>
                             <br/> <br/>
-                            <input type="button" class="btn btn-round btn-success" id="savemovie" style="margin-left: 800px;" value="确认新增"/>
+                            <input type="button" class="btn btn-3d btn-danger"  th:onclick="'history.go(-1);'" align="left" style="float:left;margin-left:700px;" value="返回"/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                            <input type="button" class="btn  btn-3d btn-success" id="savemovie" align="right"  value="确认新增"/>
                         </form>
                     <!--</div>-->
                 </div>
@@ -42,26 +43,15 @@
 </div>
 
 <script type="text/javascript">
-
-    function update(id) {
-        location.href="http://movie.huishiguang.com/movie/update?id="+id;
-        /* $.ajax({
-             url:
-         });*/
-    }
-
-    function addNew() {
-        location.href="movie/addmovie";
-    }
-
-    $(function () {
+        $(function () {
         $("#savemovie").on('click', function (e) {
             $.ajax({
-                url: "/movie/addmovie?name=" + $("#name").val()+"&link="+$("#link").val(),
+                url: "/addmovie?name=" + $("#name").val()+"&link="+$("#link").val(),
                 type: "POST",
                 success: function (result) {
                     if (null != result && "" != result) {
                        alert("add success");
+                       location.href="index";
                     } else {
                       alert("system error");
                     }

@@ -21,8 +21,8 @@
                 <div class="col-md-12 padding-0" style="padding-bottom:20px;">
                     <div class="col-md-6" style="padding-left:10px;">
                         <form action="import" method="post" enctype="multipart/form-data">
-                            <input type="file" name="fileParam"/>
-                            <input type="submit" class="btn btn-round btn-success" value="导入电影资源"/>
+                            <input type="file" align="left" style="float: left;" name="fileParam"/>
+                            <input type="submit" align="right" class="btn  btn-raised btn-success" value="导入电影资源"/>
                         </form>
                     </div>
                     <div class="col-md-6">
@@ -51,7 +51,7 @@
                             <th>密码</th>
                             <th>来源</th>
                             <th>类别</th>
-                            <th>操作</th>
+                            <th style="width: 300px;">操作</th>
                         </tr>
                         </thead>
                         <tbody>
@@ -62,19 +62,18 @@
                             <td th:text="${movie.passwd}"/>
                             <td th:text="${movie.original}"/>
                             <td th:text="${movie.type}"/>
-                            <td> <input type="button" class="btn btn-round btn-success" value="修改" onclick="update()"/>
-                                <input type="hidden" th:value="${movie.id}" class="ddd"/>
-                                <input type="button" class="btn btn-round btn-success" th:onclick="'javascript:del('+${movie.id}+')'"   value="删除"/>
-                                <input type="button" class="btn  btn-raised btn-success" onclick="addNew()" value="新增电影资源"/>
+                            <td> <input type="button" class="btn  btn-3d btn-success" value="修改" th:onclick="'javascript:update('+${movie.id}+')'"/>&nbsp;
+                                <input type="button" class="btn btn-3d btn-danger" th:onclick="'javascript:del('+${movie.id}+')'"   value="删除"/>&nbsp;
+                                <input type="button" class=" btn btn-3d btn-primary" onclick="addNew()" value="新增电影资源"/>
                             </td>
                         </tr>
                         </tbody>
                     </table>
                 </div>
                 <div class="col-md-6" style="padding-top:20px;">
-                    <span>showing 0-10 of 30 items</span>
+                  showing <span style="color: red;" th:text="${size}"/> items
                 </div>
-                <div class="col-md-6">
+               <!-- <div class="col-md-6">
                     <ul class="pagination pull-right">
                         <li>
                             <a href="#" aria-label="Previous">
@@ -102,7 +101,7 @@
                             </a>
                         </li>
                     </ul>
-                </div>
+                </div>-->
             </div>
         </div>
     </div>
@@ -111,18 +110,18 @@
 <script type="text/javascript">
 
     function update(id) {
-       location.href="movie/update?name="+name;
+       location.href="preupdate?id="+id;
     }
 
     function addNew() {
-        location.href="movie/addmovieindex";
+        location.href="addmovieindex";
     }
 
     function del(id) {
         if (!confirm("确认要删除吗?")) {
             return;
         }
-       location.href = "movie/del?id=" + id;
+       location.href = "del?id=" + id;
     }
 
 </script>

@@ -43,4 +43,14 @@ public class IndexServiceImpl implements IndexService {
     public void deleteById(String id) {
         movieMapper.deleteByPrimaryKey(Long.parseLong(id));
     }
+
+    @Override
+    public Movie getByPrimarykey(String id){
+        return movieMapper.selectByPrimaryKey(Long.parseLong(id));
+    }
+
+    @Override
+    public void updateById(Map<String, Object> map) {
+        movieMapper.updateById(map);
+    }
 }

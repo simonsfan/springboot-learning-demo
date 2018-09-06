@@ -157,7 +157,7 @@ public class IndexController {
             }
             List<Movie> movies = indexService.selectAll(map);
             model.addAttribute("movielist", movies);
-            model.addAttribute("movie", movie);
+            model.addAttribute("size", movies.size());
         } catch (Exception e) {
             log.error("index page error:{}", e);
         }
@@ -200,12 +200,12 @@ public class IndexController {
         return ResultUtil.success1(1002, "未获取到许可");
     }
 
-    @RequestMapping("/movie/addmovieindex")
+    @RequestMapping("/addmovieindex")
     public String addMovieIndex() {
         return "/addmovie";
     }
 
-    @RequestMapping("/movie/addmovie")
+    @RequestMapping("/addmovie")
     @ResponseBody
     public String addMovie(Movie movie) {
         try {
@@ -218,7 +218,7 @@ public class IndexController {
         }
     }
 
-    @RequestMapping("/movie/del")
+    @RequestMapping("/del")
     public String del(@RequestParam(required = false, value = "id") String id) {
         try {
             log.info("/movie/del params: id=" + id);
@@ -227,6 +227,35 @@ public class IndexController {
             log.error("/movie/del params: id=" + id + ",exception=" + e);
         }
         return "redirect:/index";
+    }
+
+    @RequestMapping("/preupdate")
+    public String preUpdate(@RequestParam(required = false, value = "id") String id, Model model) {
+        Movie movie = indexService.getByPrimarykey(id);
+        model.addAttribute("movie", movie);
+        return "/updatemovie";
+    }
+
+    @ResponseBody
+    @RequestMapping("/update")
+    public Result update(@RequestParam(required = false, value = "id") String id,
+                         @RequestParam(required = false, value = "name") String name,
+                         @RequestParam(required = false, value = "link") String link) {
+        try {
+            log.info("/movie/update params: id=" + id + ",name=" + name + ",link=" + link);
+            if(StringUtils.isEmpty(id) || StringUtils.isEmpty(name) || StringUtils.isEmpty(link)){
+                return ResultUtil.success1(1002, "lack of params");
+            }
+            Map<String, Object> map = new HashMap<>();
+            map.put("id", id);
+            map.put("name", name);
+            map.put("link", link);
+            indexService.updateById(map);
+            return ResultUtil.success1(1001, "update success");
+        } catch (Exception e) {
+            log.error("/movie/update params: id=" + id + ",exception=" + e);
+            return ResultUtil.success1(-1, "update success");
+        }
     }
 
 }

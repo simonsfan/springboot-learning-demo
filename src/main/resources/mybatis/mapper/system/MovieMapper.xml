@@ -129,4 +129,8 @@
         <include refid="Base_Column_List"/>
         from movie where name like #{name} limit 10;
     </select>
+
+    <update id="updateById" parameterType="java.util.Map">
+        update movie set name=#{name},link=#{link} where id=#{id};
+    </update>
 </mapper>

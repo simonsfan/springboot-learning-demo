@@ -22,4 +22,7 @@ public interface IndexService {
 
     void deleteById(String id);
 
+    Movie getByPrimarykey(String id);
+
+    void updateById(Map<String,Object> map);
 }
