@@ -22,7 +22,8 @@
                     <div class="col-md-6" style="padding-left:10px;">
                         <form action="import" method="post" enctype="multipart/form-data">
                             <input type="file" align="left" style="float: left;" name="fileParam"/>
-                            <input type="submit" align="right" class="btn  btn-raised btn-success" value="导入电影资源"/>
+                            <input type="submit" align="right" class="btn  btn-raised btn-success" value="导入电影资源"/>&nbsp;&nbsp;&nbsp;
+                            <input type="button" class="btn  btn-raised btn-success" onclick="addNew()" value="新增电影资源"/>
                         </form>
                     </div>
                     <div class="col-md-6">
@@ -31,7 +32,7 @@
                                 <div class="input-group">
                                     <input type="input" class="form-control" aria-label="..." name="name"/>
                                     <div class="input-group-btn">
-                                        <input type="submit" class="btn  btn-raised btn-success" value="search"/>
+                                        <input type="submit" class="btn  btn-raised btn-success" value="search"/>&nbsp;&nbsp;&nbsp;
                                     </div>
                                     <!-- /btn-group -->
                                 </div>
@@ -51,7 +52,7 @@
                             <th>密码</th>
                             <th>来源</th>
                             <th>类别</th>
-                            <th style="width: 300px;">操作</th>
+                            <th style="width: 200px;">操作</th>
                         </tr>
                         </thead>
                         <tbody>
@@ -63,8 +64,7 @@
                             <td th:text="${movie.original}"/>
                             <td th:text="${movie.type}"/>
                             <td> <input type="button" class="btn  btn-3d btn-success" value="修改" th:onclick="'javascript:update('+${movie.id}+')'"/>&nbsp;
-                                <input type="button" class="btn btn-3d btn-danger" th:onclick="'javascript:del('+${movie.id}+')'"   value="删除"/>&nbsp;
-                                <input type="button" class=" btn btn-3d btn-primary" onclick="addNew()" value="新增电影资源"/>
+                                <input type="button" class="btn btn-3d btn-danger" th:onclick="'javascript:del('+${movie.id}+')'"   value="删除"/>
                             </td>
                         </tr>
                         </tbody>
