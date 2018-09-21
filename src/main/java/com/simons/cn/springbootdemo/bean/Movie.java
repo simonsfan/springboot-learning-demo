@@ -1,5 +1,7 @@
 package com.simons.cn.springbootdemo.bean;
 
+import java.util.Date;
+
 public class Movie {
     private Long id;
 
@@ -12,6 +14,8 @@ public class Movie {
     private String original;
 
     private String type;
+
+    private Date createTime;
 
     public Long getId() {
         return id;
@@ -59,5 +63,13 @@ public class Movie {
 
     public void setType(String type) {
         this.type = type == null ? null : type.trim();
+    }
+
+    public Date getCreateTime() {
+        return createTime;
+    }
+
+    public void setCreateTime(Date createTime) {
+        this.createTime = createTime;
     }
 }

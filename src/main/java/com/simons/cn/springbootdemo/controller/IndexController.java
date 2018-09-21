@@ -45,6 +45,14 @@ public class IndexController {
     @Autowired
     private GuavaRateLimiterService rateLimiterService;
 
+/*
+    @InitBinder
+    public void initBinder(WebDataBinder binder) {
+        DateFormat df = new SimpleDateFormat("yyyy-MM-dd HH-mm-ss");
+        binder.registerCustomEditor(Date.class, new CustomDateEditor(df, true));
+    }
+*/
+
     /**
      * 导入功能，暂时先实现一个最简单的版本，后期完善
      */
