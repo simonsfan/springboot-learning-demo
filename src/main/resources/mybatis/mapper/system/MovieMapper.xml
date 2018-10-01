@@ -137,7 +137,7 @@
     <select id="findByName" parameterType="java.lang.String" resultMap="BaseResultMap">
         select
         <include refid="Base_Column_List"/>
-        from movie where name like #{name} limit 10;
+        from movie where name like #{name} order by create_time desc limit 10;
     </select>
 
     <update id="updateById" parameterType="java.util.Map">
