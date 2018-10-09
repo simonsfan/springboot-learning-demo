@@ -76,7 +76,7 @@ public class WeixinServiceImpl extends BaseController implements WeixinService {
                         for (Movie movie : movies) {
                             replymsg = replymsg + movie.getLink()+"\n\n";
                         }
-                    replymsg=appendMsg(xmlMap,replymsg+"10.1国庆快乐。如果资源失效，请看官以 电影名称+失效 的格式回复一下，小编会第一时间修复哒~");
+                    replymsg=appendMsg(xmlMap,replymsg+"10.9 如果资源失效，请看官以 电影名称+失效 的格式回复一下，小编会第一时间修复哒~");
                     } else {  //未找到匹配项
                         recordMapper.insert(new MovieRecord(content,new Date()));
                         replymsg = appendMsg(xmlMap, ConstantEnum.NOMATCH.getMsg());
