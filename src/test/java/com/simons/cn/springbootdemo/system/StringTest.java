@@ -3,6 +3,7 @@ package com.simons.cn.springbootdemo.system;
 import com.simons.cn.springbootdemo.bean.Movie;
 import com.simons.cn.springbootdemo.dao.system.MovieMapper;
 import com.simons.cn.springbootdemo.service.Weixin.IndexService;
+import com.simons.cn.springbootdemo.util.ApplicationContextHolder;
 import org.apache.commons.collections.CollectionUtils;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -58,5 +59,12 @@ public class StringTest {
             }
         }
         System.out.println(replymsg);
+    }
+
+
+    @Test
+    public void testProxyBean(){
+        IndexService indexService =   ApplicationContextHolder.getApplicationContext().getBean("indexService",IndexService.class);
+        System.out.println("ddddd");
     }
 }
