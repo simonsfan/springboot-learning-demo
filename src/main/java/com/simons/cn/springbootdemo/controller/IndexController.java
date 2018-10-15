@@ -2,6 +2,7 @@ package com.simons.cn.springbootdemo.controller;
 
 import com.simons.cn.springbootdemo.bean.Movie;
 import com.simons.cn.springbootdemo.bean.UrlInfo;
+import com.simons.cn.springbootdemo.exception.GlobalException;
 import com.simons.cn.springbootdemo.service.Weixin.IndexService;
 import com.simons.cn.springbootdemo.util.GuavaRateLimiterService;
 import com.simons.cn.springbootdemo.util.Result;
@@ -179,7 +180,7 @@ public class IndexController {
 
 
     /**
-     * 测试全局异常统一处理
+     * 测试api全局异常统一处理
      *
      * @return
      */
@@ -187,7 +188,7 @@ public class IndexController {
     @ResponseBody
     public String hello() {
         if (true) {
-            throw new IllegalArgumentException("我发生异常啦……");
+            throw new GlobalException(200, "我是api，发生异常啦~");
         }
         return "hello";
     }
@@ -251,7 +252,7 @@ public class IndexController {
                          @RequestParam(required = false, value = "link") String link) {
         try {
             log.info("/movie/update params: id=" + id + ",name=" + name + ",link=" + link);
-            if(StringUtils.isEmpty(id) || StringUtils.isEmpty(name) || StringUtils.isEmpty(link)){
+            if (StringUtils.isEmpty(id) || StringUtils.isEmpty(name) || StringUtils.isEmpty(link)) {
                 return ResultUtil.success1(1002, "lack of params");
             }
             Map<String, Object> map = new HashMap<>();

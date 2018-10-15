@@ -11,10 +11,12 @@ package com.simons.cn.springbootdemo.exception;
 public class GlobalException extends RuntimeException {
 
     private Integer code;
+    private String message;
 
     public GlobalException(Integer code,String message) {
         super(message);
         this.code = code;
+        this.message = message;
     }
 
     public Integer getCode() {
@@ -23,5 +25,14 @@ public class GlobalException extends RuntimeException {
 
     public void setCode(Integer code) {
         this.code = code;
+    }
+
+    @Override
+    public String getMessage() {
+        return message;
+    }
+
+    public void setMessage(String message) {
+        this.message = message;
     }
 }
