@@ -157,7 +157,7 @@ public class IndexController {
      * @param movie
      * @return
      */
-    @RequestMapping("/index")
+    @RequestMapping(value={"/","/index"})
     public String doDefaultView(Model model, Movie movie) {
         try {
             Map<String, Object> map = new HashMap<>();
