@@ -157,7 +157,7 @@ public class IndexController {
      * @param movie
      * @return
      */
-    @RequestMapping(value={"/","/index"})
+    @RequestMapping(value = {"/index"})
     public String doDefaultView(Model model, Movie movie) {
         try {
             Map<String, Object> map = new HashMap<>();
@@ -173,10 +173,49 @@ public class IndexController {
         return "/index";
     }
 
-/*   @RequestMapping("/")
+    @RequestMapping(value = {"/","/login"})
     public String login() {
-        return "login";
-    }*/
+        return "/login666";
+    }
+
+    @GetMapping(value = "/loginasyn")
+    @ResponseBody
+    public Result loginAsyn(
+                            @RequestParam(value = "username",required = false) String userName,
+                            @RequestParam(value = "passwd",required = false) String passWord) {
+        log.info("userlogin username=" + userName + ",password=" + passWord);
+        try {
+            if (StringUtils.isEmpty(userName) || StringUtils.isEmpty(passWord)) {
+                return ResultUtil.success1(LoginStatus.IS_EMPTY.getCode(), LoginStatus.IS_EMPTY.getMsg());
+            }
+            if (userName.equals("simons") && passWord.equals("simons")) {
+                return ResultUtil.success1(LoginStatus.SUCCESS.getCode(), LoginStatus.SUCCESS.getMsg());
+            }
+            return ResultUtil.success1(LoginStatus.PASSWD_ERROR.getCode(), LoginStatus.PASSWD_ERROR.getMsg());
+        } catch (Exception e) {
+            log.error("");
+        }
+        return ResultUtil.success1(LoginStatus.SYSTEM_ERROR.getCode(), LoginStatus.SYSTEM_ERROR.getMsg());
+    }
+
+    public static enum LoginStatus {
+        IS_EMPTY(1001, "username or password is null"), PASSWD_ERROR(1002, "username or password is wrong"), SUCCESS(1000, "success"), SYSTEM_ERROR(1003, "system error");
+        private int code;
+        private String msg;
+
+        LoginStatus(int code, String msg) {
+            this.code = code;
+            this.msg = msg;
+        }
+
+        public int getCode() {
+            return code;
+        }
+
+        public String getMsg() {
+            return msg;
+        }
+    }
 
 
     /**
