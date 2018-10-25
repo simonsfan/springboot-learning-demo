@@ -15,6 +15,9 @@ import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
+/**
+ * rateLimiter控制并发数量：基于自定义注解，使用方便
+ */
 @Component
 @Scope
 @Aspect

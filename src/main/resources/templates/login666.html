@@ -49,6 +49,12 @@
             $.ajax({
                 url: "loginasyn?username=" + $("#username").val() + "&passwd=" + $("#passwd").val(),
                 type: "GET",
+                beforeSend:function () {
+                   if($("#username").val()=="" || $("#passwd").val()==""){
+                       alert("username or passwd is null");
+                       return;
+                   }
+                },
                 success: function (result) {
                     console.log(result.code);
                     if (null != result && "" != result) {

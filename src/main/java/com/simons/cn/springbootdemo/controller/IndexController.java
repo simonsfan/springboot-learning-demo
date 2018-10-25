@@ -18,6 +18,8 @@ import org.springframework.util.FileCopyUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import java.io.File;
 import java.io.FileInputStream;
 import java.util.ArrayList;
@@ -26,17 +28,14 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * 项目名称：springbootdemo
- * 类名称：IndexController
- * 类描述：测试springboot修改项目属性
  * 创建人：simonsfan
- * 创建时间：2018/6/25 17:33
+ * 创建时间：2018/6/25
  */
 @Controller
 public class IndexController {
 
     private static final Logger log = LoggerFactory.getLogger(IndexController.class);
-
+    private static final String LOGINNAME = "loginname";
     @Autowired
     private UrlInfo urlInfo; //常量封装类-测试
 
@@ -45,111 +44,6 @@ public class IndexController {
 
     @Autowired
     private GuavaRateLimiterService rateLimiterService;
-
-/*
-    @InitBinder
-    public void initBinder(WebDataBinder binder) {
-        DateFormat df = new SimpleDateFormat("yyyy-MM-dd HH-mm-ss");
-        binder.registerCustomEditor(Date.class, new CustomDateEditor(df, true));
-    }
-*/
-
-    /**
-     * 导入功能，暂时先实现一个最简单的版本，后期完善
-     */
-    @PostMapping("/import")
-    @ResponseBody
-    public String importMovie(MultipartFile fileParam) {
-        if (fileParam == null) {
-            return "文件为空";
-        }
-        File cardExcel = null;
-        Workbook wb = null;
-        String path = IndexController.class.getClassLoader().getResource("/").getPath();
-        path = path.substring(0, path.indexOf("WEB-INF") + "WEB-INF".length()) + "/" + fileParam.getOriginalFilename();
-        cardExcel = new File(path);
-
-        try {
-            FileCopyUtils.copy(fileParam.getBytes(), cardExcel);
-
-            wb = WorkbookFactory.create(new FileInputStream(cardExcel));
-            List<Movie> list = new ArrayList<>();
-            int totalNum = 0;
-            for (int index = 0; index < wb.getNumberOfSheets(); index++) {
-                Sheet sheet = wb.getSheetAt(index);
-                if (sheet == null) {
-                    continue;
-                }
-                if (sheet.getLastRowNum() > 0) {
-                    totalNum += sheet.getLastRowNum() + 1;
-                }
-                for (int rowNum = 1; rowNum < sheet.getPhysicalNumberOfRows(); rowNum++) {  //rowNum取1因为有一行表头
-                    /*Row row = sheet.getRow(rowNum);
-                    Cell cell0 = row.getCell(0);
-                    Cell cell1 = row.getCell(1);
-                    Cell cell2 = row.getCell(2);
-                    Cell cell3 = row.getCell(3);
-                    if (cell0 == null || cell1 == null || cell2 == null || cell3 == null) {
-                        continue;
-                    }
-                    String name = this.getCellValue(cell0);
-                    String type = this.getCellValue(cell1);
-                    String link = this.getCellValue(cell2);
-                    String original = this.getCellValue(cell3);
-
-                    Movie movie = new Movie();
-                    movie.setName(name);
-                    movie.setType(type);
-                    movie.setLink(link);
-                    movie.setOriginal(original);
-                    String passwd = link.substring(link.lastIndexOf(":") + 1).trim();
-                    movie.setPasswd(passwd);*/
-
-                    Row row = sheet.getRow(rowNum);
-                    Cell cell2 = row.getCell(2);
-                    Cell cell3 = row.getCell(3);
-                    if (cell2 == null || cell3 == null) {
-                        continue;
-                    }
-                    String name = this.getCellValue(cell2);
-                    String original = this.getCellValue(cell3);
-
-                    if (!name.contains("链接")) {
-                        log.info("没有链接字段的=" + name);
-                        continue;
-                    }
-                    String moviename = name.substring(0, name.indexOf("链接"));
-
-                    Movie movie = new Movie();
-                    movie.setName(moviename);
-                    movie.setType("电影");
-                    movie.setLink(name);
-                    movie.setOriginal(original);
-                    String passwd = name.substring(name.lastIndexOf(":") + 1).trim();
-                    movie.setPasswd(passwd);
-                    list.add(movie);
-                }
-                indexService.insertBatch(list);
-            }
-            cardExcel.delete();
-        } catch (Exception e) {
-            e.printStackTrace();
-            log.error("导入失败异常=" + e);
-            return "导入失败";
-        }
-        return "导入成功";
-    }
-
-    public static String getCellValue(Cell cell) {
-        if (cell.getCellType() == Cell.CELL_TYPE_BOOLEAN) {
-            return String.valueOf(cell.getBooleanCellValue());
-        } else if (cell.getCellType() == Cell.CELL_TYPE_NUMERIC) {
-            Double d = cell.getNumericCellValue();
-            return String.valueOf(d.intValue());
-        }
-        return String.valueOf(cell.getStringCellValue());
-    }
-
     /**
      * 电影后台首页展示页
      *
@@ -158,8 +52,14 @@ public class IndexController {
      * @return
      */
     @RequestMapping(value = {"/index"})
-    public String doDefaultView(Model model, Movie movie) {
+    public String doDefaultView(Model model, Movie movie,HttpServletRequest request) {
+
         try {
+            HttpSession session = request.getSession();
+            String userName = (String)session.getAttribute(LOGINNAME);
+            if(StringUtils.isEmpty(userName)){
+                return "redirect:/login";
+            }
             Map<String, Object> map = new HashMap<>();
             if (movie != null && StringUtils.isNotEmpty(movie.getName())) {
                 map.put("name", "%" + movie.getName() + "%");
@@ -181,14 +81,17 @@ public class IndexController {
     @GetMapping(value = "/loginasyn")
     @ResponseBody
     public Result loginAsyn(
-                            @RequestParam(value = "username",required = false) String userName,
-                            @RequestParam(value = "passwd",required = false) String passWord) {
+            @RequestParam(value = "username",required = false) String userName,
+            @RequestParam(value = "passwd",required = false) String passWord, HttpServletRequest request) {
         log.info("userlogin username=" + userName + ",password=" + passWord);
         try {
             if (StringUtils.isEmpty(userName) || StringUtils.isEmpty(passWord)) {
                 return ResultUtil.success1(LoginStatus.IS_EMPTY.getCode(), LoginStatus.IS_EMPTY.getMsg());
             }
             if (userName.equals("simons") && passWord.equals("simons")) {
+                HttpSession session = request.getSession();
+                session.setAttribute(LOGINNAME,userName);
+//                session.setMaxInactiveInterval(30*60);
                 return ResultUtil.success1(LoginStatus.SUCCESS.getCode(), LoginStatus.SUCCESS.getMsg());
             }
             return ResultUtil.success1(LoginStatus.PASSWD_ERROR.getCode(), LoginStatus.PASSWD_ERROR.getMsg());
@@ -305,6 +208,103 @@ public class IndexController {
             return ResultUtil.success1(-1, "update success");
         }
     }
+
+    /**
+     * 导入功能，暂时先实现一个最简单的版本，后期完善
+     */
+    @PostMapping("/import")
+    @ResponseBody
+    public String importMovie(MultipartFile fileParam) {
+        if (fileParam == null) {
+            return "文件为空";
+        }
+        File cardExcel = null;
+        Workbook wb = null;
+        String path = IndexController.class.getClassLoader().getResource("/").getPath();
+        path = path.substring(0, path.indexOf("WEB-INF") + "WEB-INF".length()) + "/" + fileParam.getOriginalFilename();
+        cardExcel = new File(path);
+
+        try {
+            FileCopyUtils.copy(fileParam.getBytes(), cardExcel);
+
+            wb = WorkbookFactory.create(new FileInputStream(cardExcel));
+            List<Movie> list = new ArrayList<>();
+            int totalNum = 0;
+            for (int index = 0; index < wb.getNumberOfSheets(); index++) {
+                Sheet sheet = wb.getSheetAt(index);
+                if (sheet == null) {
+                    continue;
+                }
+                if (sheet.getLastRowNum() > 0) {
+                    totalNum += sheet.getLastRowNum() + 1;
+                }
+                for (int rowNum = 1; rowNum < sheet.getPhysicalNumberOfRows(); rowNum++) {  //rowNum取1因为有一行表头
+                    /*Row row = sheet.getRow(rowNum);
+                    Cell cell0 = row.getCell(0);
+                    Cell cell1 = row.getCell(1);
+                    Cell cell2 = row.getCell(2);
+                    Cell cell3 = row.getCell(3);
+                    if (cell0 == null || cell1 == null || cell2 == null || cell3 == null) {
+                        continue;
+                    }
+                    String name = this.getCellValue(cell0);
+                    String type = this.getCellValue(cell1);
+                    String link = this.getCellValue(cell2);
+                    String original = this.getCellValue(cell3);
+
+                    Movie movie = new Movie();
+                    movie.setName(name);
+                    movie.setType(type);
+                    movie.setLink(link);
+                    movie.setOriginal(original);
+                    String passwd = link.substring(link.lastIndexOf(":") + 1).trim();
+                    movie.setPasswd(passwd);*/
+
+                    Row row = sheet.getRow(rowNum);
+                    Cell cell2 = row.getCell(2);
+                    Cell cell3 = row.getCell(3);
+                    if (cell2 == null || cell3 == null) {
+                        continue;
+                    }
+                    String name = this.getCellValue(cell2);
+                    String original = this.getCellValue(cell3);
+
+                    if (!name.contains("链接")) {
+                        log.info("没有链接字段的=" + name);
+                        continue;
+                    }
+                    String moviename = name.substring(0, name.indexOf("链接"));
+
+                    Movie movie = new Movie();
+                    movie.setName(moviename);
+                    movie.setType("电影");
+                    movie.setLink(name);
+                    movie.setOriginal(original);
+                    String passwd = name.substring(name.lastIndexOf(":") + 1).trim();
+                    movie.setPasswd(passwd);
+                    list.add(movie);
+                }
+                indexService.insertBatch(list);
+            }
+            cardExcel.delete();
+        } catch (Exception e) {
+            e.printStackTrace();
+            log.error("导入失败异常=" + e);
+            return "导入失败";
+        }
+        return "导入成功";
+    }
+
+    public static String getCellValue(Cell cell) {
+        if (cell.getCellType() == Cell.CELL_TYPE_BOOLEAN) {
+            return String.valueOf(cell.getBooleanCellValue());
+        } else if (cell.getCellType() == Cell.CELL_TYPE_NUMERIC) {
+            Double d = cell.getNumericCellValue();
+            return String.valueOf(d.intValue());
+        }
+        return String.valueOf(cell.getStringCellValue());
+    }
+
 
 }
 
