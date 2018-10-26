@@ -1,5 +1,7 @@
 package com.simons.cn.springbootdemo.util;
 
+import com.google.gson.Gson;
+
 /**
  * 项目名称：springbootdemo
  * 类名称：com.simons.cn.springbootdemo.util
@@ -9,20 +11,20 @@ package com.simons.cn.springbootdemo.util;
  */
 public class ResultUtil {
 
-    public static Result success(Integer code, String msg, Object obj) {
+    public static String success(Integer code, String msg, Object obj) {
         Result result = new Result();
         result.setCode(code);
         result.setMsg(msg);
         result.setData(obj);
-        return result;
+        return new Gson().toJson(result);
     }
-  public static Result success1(Integer code, String msg) {
+
+    public static String success1(Integer code, String msg) {
         Result result = new Result();
         result.setCode(code);
         result.setMsg(msg);
-        return result;
+        return new Gson().toJson(result);
     }
-
 
 
 }

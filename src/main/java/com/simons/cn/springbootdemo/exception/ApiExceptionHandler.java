@@ -1,6 +1,5 @@
 package com.simons.cn.springbootdemo.exception;
 
-import com.simons.cn.springbootdemo.util.Result;
 import com.simons.cn.springbootdemo.util.ResultUtil;
 
 /**
@@ -11,7 +10,7 @@ public class ApiExceptionHandler {
 
 //    @ResponseBody
 //    @ExceptionHandler
-    public Result handleException(Exception e) {
+    public String handleException(Exception e) {
         if (e instanceof GlobalException) {
             GlobalException ge = (GlobalException) e;
             return ResultUtil.success1(ge.getCode(), ge.getMessage());

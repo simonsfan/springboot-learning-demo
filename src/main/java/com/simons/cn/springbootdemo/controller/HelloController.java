@@ -1,8 +1,7 @@
 package com.simons.cn.springbootdemo.controller;
 
-import com.simons.cn.springbootdemo.exception.GlobalException;
 import com.simons.cn.springbootdemo.Enum.ConstantEnum;
-import com.simons.cn.springbootdemo.util.Result;
+import com.simons.cn.springbootdemo.exception.GlobalException;
 import com.simons.cn.springbootdemo.util.ResultUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -25,7 +24,7 @@ public class HelloController {
 
     @GetMapping(value = "/hello1")
     @ResponseBody
-    public Result hello(@RequestParam(value = "age", defaultValue = "50", required = false) Integer age) throws GlobalException {
+    public String hello(@RequestParam(value = "age", defaultValue = "50", required = false) Integer age) throws GlobalException {
         if (age < 10) {
             throw new GlobalException(ConstantEnum.LESS10.getCode(), ConstantEnum.LESS10.getMsg());
         } else if (age > 50) {

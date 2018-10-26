@@ -24,6 +24,7 @@
                             <input type="file" align="left" style="float: left;" name="fileParam"/>
                             <input type="submit" align="right" class="btn  btn-raised btn-success" value="导入电影资源"/>&nbsp;&nbsp;&nbsp;
                             <input type="button" class="btn  btn-raised btn-success" onclick="addNew()" value="新增电影资源"/>
+                            <input type="button" class="btn  btn-raised btn-success" onclick="logout()" value="退出登录"/>
                         </form>
                     </div>
                     <div class="col-md-6">
@@ -86,6 +87,13 @@
             return;
         }
        location.href = "del?id=" + id;
+    }
+
+    function logout() {
+        if (!confirm("确认要退出吗?")) {
+            return;
+        }
+        location.href="logout";
     }
 
 </script>

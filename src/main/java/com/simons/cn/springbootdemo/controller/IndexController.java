@@ -5,7 +5,6 @@ import com.simons.cn.springbootdemo.bean.UrlInfo;
 import com.simons.cn.springbootdemo.exception.GlobalException;
 import com.simons.cn.springbootdemo.service.Weixin.IndexService;
 import com.simons.cn.springbootdemo.util.GuavaRateLimiterService;
-import com.simons.cn.springbootdemo.util.Result;
 import com.simons.cn.springbootdemo.util.ResultUtil;
 import org.apache.commons.lang.StringUtils;
 import org.apache.poi.ss.usermodel.*;
@@ -16,6 +15,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.FileCopyUtils;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
@@ -78,17 +79,28 @@ public class IndexController {
         return "/login666";
     }
 
+    @RequestMapping(value = "/logout")
+    public String logOut(HttpServletRequest request) {
+        HttpSession session = request.getSession();
+        String passwd = (String)session.getAttribute(LOGINNAME);
+        if(StringUtils.isNotEmpty(passwd)){
+            session.removeAttribute(LOGINNAME);
+        }
+        return "/login666";
+    }
+
     @GetMapping(value = "/loginasyn")
     @ResponseBody
-    public Result loginAsyn(
+    public String loginAsyn(
             @RequestParam(value = "username",required = false) String userName,
-            @RequestParam(value = "passwd",required = false) String passWord, HttpServletRequest request) {
+            @RequestParam(value = "passwd",required = false) String passWord) {
         log.info("userlogin username=" + userName + ",password=" + passWord);
         try {
             if (StringUtils.isEmpty(userName) || StringUtils.isEmpty(passWord)) {
                 return ResultUtil.success1(LoginStatus.IS_EMPTY.getCode(), LoginStatus.IS_EMPTY.getMsg());
             }
             if (userName.equals("simons") && passWord.equals("simons")) {
+                HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
                 HttpSession session = request.getSession();
                 session.setAttribute(LOGINNAME,userName);
 //                session.setMaxInactiveInterval(30*60);
@@ -96,7 +108,7 @@ public class IndexController {
             }
             return ResultUtil.success1(LoginStatus.PASSWD_ERROR.getCode(), LoginStatus.PASSWD_ERROR.getMsg());
         } catch (Exception e) {
-            log.error("");
+            log.error("登录异常e="+e.toString());
         }
         return ResultUtil.success1(LoginStatus.SYSTEM_ERROR.getCode(), LoginStatus.SYSTEM_ERROR.getMsg());
     }
@@ -142,7 +154,7 @@ public class IndexController {
      */
     @ResponseBody
     @RequestMapping("/ratelimiter")
-    public Result testRateLimiter() {
+    public String testRateLimiter() {
         if (rateLimiterService.tryAcquire()) {
             log.info("成功获取许可");
             return ResultUtil.success1(1001, "成功获取许可");
@@ -189,7 +201,7 @@ public class IndexController {
 
     @ResponseBody
     @RequestMapping("/update")
-    public Result update(@RequestParam(required = false, value = "id") String id,
+    public String update(@RequestParam(required = false, value = "id") String id,
                          @RequestParam(required = false, value = "name") String name,
                          @RequestParam(required = false, value = "link") String link) {
         try {

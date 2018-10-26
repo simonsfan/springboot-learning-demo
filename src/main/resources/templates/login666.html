@@ -26,14 +26,14 @@
     <form id="loginaction">
         <input type="text" name="username" id="username" class="username" placeholder="username">
         <input type="password" name="passwd" id="passwd" class="password" placeholder="passwd">
-        <button id="sign_in" onclick="singin();">Sign me in</button>
+        <button id="sign_in" >Sign me in</button>
+      <!--  <button id="sign_in">Sign me in</button>-->
         <div class="error"><span>+</span></div>
     </form>
     <div class="connect">
         <p>微信扫一扫:</p><br/>
         <p>
-            <img style="width:302px;height: 302px;" th:src="@{/img/backgrounds/91movieqrcode.jpg}" alt=""
-                 th:title="91电影社"/>
+            <img style="width:302px;height: 302px;" th:src="@{/img/backgrounds/91movieqrcode.jpg}" alt="" th:title="91电影社"/>
         </p>
     </div>
 </div>
@@ -41,35 +41,43 @@
 <script type="text/javascript" th:src="@{/js/jquery-1.8.2.min.js}"></script>
 <script type="text/javascript" th:src="@{/js/supersized.3.2.7.min.js}"></script>
 <script type="text/javascript" th:src="@{/js/supersized-init.js}"></script>
-<script type="text/javascript" th:src="@{/js/scripts.js}"></script>
 
 <script type="text/javascript">
     $(function () {
         $("#sign_in").on('click', function (e) {
+            e.preventDefault();
+            console.log("===================");
             $.ajax({
+                beforeSend: function () {
+                    if ($("#username").val() == "" || $("#passwd").val() == "") {
+                        alert("username or passwd is null");
+                        return false;
+                    }
+                },
                 url: "loginasyn?username=" + $("#username").val() + "&passwd=" + $("#passwd").val(),
                 type: "GET",
-                beforeSend:function () {
-                   if($("#username").val()=="" || $("#passwd").val()==""){
-                       alert("username or passwd is null");
-                       return;
-                   }
-                },
+                dataType: "json",
                 success: function (result) {
-                    console.log(result.code);
-                    if (null != result && "" != result) {
-                        if (result.code == "1000") {
+                    console.log(typeof result);
+                    console.info( result);
+                    if (!$.isEmptyObject(result)) {
+                        if (result.code == 1000) {
+                            console.log("100000000000000000");
                             location.href = "/index";
                         } else {
-                            alert(result.msg);
+                            alert(result["msg"]);
                         }
                     } else {
-                        location.href = "/login";
+                        console.log("result为空");
                     }
+                },
+                error: function () {
+                    alert("error--------");
+
                 }
             })
         });
-    });
+    })
 </script>
 </body>
 </html>
