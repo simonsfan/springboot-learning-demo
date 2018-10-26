@@ -170,9 +170,14 @@ public class IndexController {
 
     @RequestMapping("/addmovie")
     @ResponseBody
-    public String addMovie(Movie movie) {
+    public String addMovie(Movie movie, HttpServletRequest request) {
         try {
             log.info("/movie/addmovie params: name=" + movie.getName() + ",link=" + movie.getLink());
+            HttpSession session = request.getSession();
+            String userName = (String)session.getAttribute(LOGINNAME);
+            if(StringUtils.isEmpty(userName)){
+                return "redirect:/login";
+            }
             indexService.addMovie(movie);
             return ResultUtil.success(1001, "success", null).toString();
         } catch (Exception e) {
@@ -182,9 +187,14 @@ public class IndexController {
     }
 
     @RequestMapping("/del")
-    public String del(@RequestParam(required = false, value = "id") String id) {
+    public String del(@RequestParam(required = false, value = "id") String id,HttpServletRequest request) {
         try {
             log.info("/movie/del params: id=" + id);
+            HttpSession session = request.getSession();
+            String userName = (String)session.getAttribute(LOGINNAME);
+            if(StringUtils.isEmpty(userName)){
+                return "redirect:/login";
+            }
             indexService.deleteById(id);
         } catch (Exception e) {
             log.error("/movie/del params: id=" + id + ",exception=" + e);
@@ -193,7 +203,12 @@ public class IndexController {
     }
 
     @RequestMapping("/preupdate")
-    public String preUpdate(@RequestParam(required = false, value = "id") String id, Model model) {
+    public String preUpdate(@RequestParam(required = false, value = "id") String id, Model model,HttpServletRequest request) {
+        HttpSession session = request.getSession();
+        String userName = (String)session.getAttribute(LOGINNAME);
+        if(StringUtils.isEmpty(userName)){
+            return "redirect:/login";
+        }
         Movie movie = indexService.getByPrimarykey(id);
         model.addAttribute("movie", movie);
         return "/updatemovie";
@@ -203,9 +218,15 @@ public class IndexController {
     @RequestMapping("/update")
     public String update(@RequestParam(required = false, value = "id") String id,
                          @RequestParam(required = false, value = "name") String name,
-                         @RequestParam(required = false, value = "link") String link) {
+                         @RequestParam(required = false, value = "link") String link,
+                         HttpServletRequest request) {
         try {
             log.info("/movie/update params: id=" + id + ",name=" + name + ",link=" + link);
+            HttpSession session = request.getSession();
+            String userName = (String)session.getAttribute(LOGINNAME);
+            if(StringUtils.isEmpty(userName)){
+                return "redirect:/login";
+            }
             if (StringUtils.isEmpty(id) || StringUtils.isEmpty(name) || StringUtils.isEmpty(link)) {
                 return ResultUtil.success1(1002, "lack of params");
             }
@@ -226,9 +247,14 @@ public class IndexController {
      */
     @PostMapping("/import")
     @ResponseBody
-    public String importMovie(MultipartFile fileParam) {
+    public String importMovie(MultipartFile fileParam,HttpServletRequest request) {
         if (fileParam == null) {
             return "文件为空";
+        }
+        HttpSession session = request.getSession();
+        String userName = (String)session.getAttribute(LOGINNAME);
+        if(StringUtils.isEmpty(userName)){
+            return "redirect:/login";
         }
         File cardExcel = null;
         Workbook wb = null;

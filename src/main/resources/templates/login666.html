@@ -58,22 +58,18 @@
                 type: "GET",
                 dataType: "json",
                 success: function (result) {
-                    console.log(typeof result);
-                    console.info( result);
                     if (!$.isEmptyObject(result)) {
                         if (result.code == 1000) {
-                            console.log("100000000000000000");
                             location.href = "/index";
                         } else {
                             alert(result["msg"]);
                         }
                     } else {
-                        console.log("result为空");
+                        alert("接口返回值为空");
                     }
                 },
                 error: function () {
-                    alert("error--------");
-
+                    alert("error");
                 }
             })
         });
