@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class RedisController {
 
-    @Autowired
+/*    @Autowired
     private RedisTemplate<String, String> redisTemplate;
 
     @GetMapping("/testredis")
@@ -23,5 +23,5 @@ public class RedisController {
         String rediskey = "key1";
         redisTemplate.opsForValue().set(rediskey, "simionsfan");
         return redisTemplate.opsForValue().get(rediskey);
-    }
+    }*/
 }

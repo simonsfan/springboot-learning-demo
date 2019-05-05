@@ -18,12 +18,12 @@ import java.io.IOException;
 /**
  * rateLimiter控制并发数量：基于自定义注解，使用方便
  */
-@Component
+/*@Component
 @Scope
-@Aspect
+@Aspect*/
 public class RateLimitAop {
 
-    @Autowired
+/*    @Autowired
     private HttpServletResponse response;
 
     private RateLimiter rateLimiter = RateLimiter.create(5.0); //比如说，我这里设置"并发数"为5
@@ -63,5 +63,5 @@ public class RateLimitAop {
             outputStream.flush();
             outputStream.close();
         }
-    }
+    }*/
 }

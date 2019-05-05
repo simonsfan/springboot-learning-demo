@@ -3,7 +3,7 @@ package com.simons.cn.springbootdemo.controller;
 import com.simons.cn.springbootdemo.bean.Movie;
 import com.simons.cn.springbootdemo.bean.UrlInfo;
 import com.simons.cn.springbootdemo.exception.GlobalException;
-import com.simons.cn.springbootdemo.service.Weixin.IndexService;
+import com.simons.cn.springbootdemo.service.weixin.IndexService;
 import com.simons.cn.springbootdemo.util.GuavaRateLimiterService;
 import com.simons.cn.springbootdemo.util.ResultUtil;
 import org.apache.commons.lang.StringUtils;

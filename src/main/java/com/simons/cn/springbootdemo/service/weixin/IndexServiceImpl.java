@@ -1,4 +1,4 @@
-package com.simons.cn.springbootdemo.service.Weixin;
+package com.simons.cn.springbootdemo.service.weixin;
 
 import com.simons.cn.springbootdemo.bean.Movie;
 import com.simons.cn.springbootdemo.dao.system.MovieMapper;

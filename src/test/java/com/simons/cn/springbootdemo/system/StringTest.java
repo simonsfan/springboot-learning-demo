@@ -2,7 +2,7 @@ package com.simons.cn.springbootdemo.system;
 
 import com.simons.cn.springbootdemo.bean.Movie;
 import com.simons.cn.springbootdemo.dao.system.MovieMapper;
-import com.simons.cn.springbootdemo.service.Weixin.IndexService;
+import com.simons.cn.springbootdemo.service.weixin.IndexService;
 import com.simons.cn.springbootdemo.util.ApplicationContextHolder;
 import org.apache.commons.collections.CollectionUtils;
 import org.junit.Test;

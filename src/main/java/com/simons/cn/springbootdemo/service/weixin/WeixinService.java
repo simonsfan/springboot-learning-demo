@@ -1,10 +1,7 @@
-package com.simons.cn.springbootdemo.service.Weixin;
-
-import com.simons.cn.springbootdemo.bean.Movie;
+package com.simons.cn.springbootdemo.service.weixin;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.util.List;
 
 /**
  * 项目名称：springbootdemo

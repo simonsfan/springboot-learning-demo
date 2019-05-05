@@ -1,7 +1,7 @@
 package com.simons.cn.springbootdemo.util;
 
 import com.simons.cn.springbootdemo.bean.Movie;
-import com.simons.cn.springbootdemo.service.Weixin.IndexService;
+import com.simons.cn.springbootdemo.service.weixin.IndexService;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.time.DateFormatUtils;
 import org.apache.poi.hssf.usermodel.*;

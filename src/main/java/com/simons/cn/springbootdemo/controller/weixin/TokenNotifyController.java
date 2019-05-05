@@ -1,6 +1,6 @@
 package com.simons.cn.springbootdemo.controller.weixin;
 
-import com.simons.cn.springbootdemo.service.Weixin.WeixinService;
+import com.simons.cn.springbootdemo.service.weixin.WeixinService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;

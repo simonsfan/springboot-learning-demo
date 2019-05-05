@@ -12,8 +12,6 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 @SpringBootApplication
 @MapperScan("com.simons.cn.springbootdemo.dao.*")
 @ComponentScan(basePackages ="com.simons.cn.springbootdemo")
-@EnableScheduling
-@EnableAsync
 public class SpringbootdemoApplication extends SpringBootServletInitializer{
 
 	public static void main(String[] args) {
