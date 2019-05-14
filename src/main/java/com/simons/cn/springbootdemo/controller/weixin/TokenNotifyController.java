@@ -1,14 +1,20 @@
 package com.simons.cn.springbootdemo.controller.weixin;
 
 import com.simons.cn.springbootdemo.service.weixin.WeixinService;
+import org.apache.commons.codec.digest.DigestUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 
 /**
  * Created by fanrx on 2018/6/29.
@@ -22,13 +28,13 @@ public class TokenNotifyController {
     @Autowired
     private WeixinService weixinService;
 
-    @RequestMapping("/tokencheck")
+/*    @RequestMapping("/tokencheck")
     public void tokenCheck(HttpServletRequest request, HttpServletResponse response) throws Exception {
         logger.info("weixin get request begining……");
         weixinService.notify(request, response);
-    }
+    }*/
 
-/*    @RequestMapping("/tokencheck")
+    @RequestMapping("/tokencheck")
     @ResponseBody
     public String tokenCheck(@RequestParam(required = false, name = "signature") String signature,
                              @RequestParam(required = false, name = "timestamp") String timestamp,
@@ -44,5 +50,5 @@ public class TokenNotifyController {
         String shahex = DigestUtils.shaHex(list.get(0) + list.get(1) + list.get(2));
         logger.info("加密后的签名signature={}", shahex);
         return echostr;
-    }*/
+    }
 }
