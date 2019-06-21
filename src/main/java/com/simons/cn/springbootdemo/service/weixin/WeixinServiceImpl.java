@@ -52,7 +52,6 @@ public class WeixinServiceImpl extends BaseController implements WeixinService {
             request.setCharacterEncoding("UTF-8");
             response.setCharacterEncoding("UTF-8");
             Map<String, String> xmlMap = this.parseXml(request);
-            logger.info("解析后的map=" + xmlMap);
 
             String msgType = xmlMap.get("MsgType");
             fromUserName = xmlMap.get("FromUserName");
@@ -78,7 +77,7 @@ public class WeixinServiceImpl extends BaseController implements WeixinService {
                         for (Movie movie : movies) {
                             replymsg = replymsg + movie.getLink()+"\n\n";
                         }
-                    replymsg=appendMsg(xmlMap,replymsg+"如果资源失效，请以 电影名称+失效 的格式回复一下，小编会第一时间修复哒~\n\n\"很多影视资源还在持续录入中，敬请期待~");
+                    replymsg=appendMsg(xmlMap,replymsg+"如果资源失效，请以电影名称+失效的格式回复一下，小编会第一时间修复哒~ \n\n由于某些原因，今后720电影社与91电影社将同时使用。此号没有的去另外一个~");
                     } else {  //未找到匹配项
                         recordMapper.insert(new MovieRecord(content,new Date()));
                         replymsg = appendMsg(xmlMap, ConstantEnum.NOMATCH.getMsg());
